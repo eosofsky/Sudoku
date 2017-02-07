@@ -31,10 +31,10 @@ public class Cube : MonoBehaviour {
 	}
 
 	IEnumerator	rotate (GameObject piece, bool left) {
-		int absAmount = 10;
-		int amount = left ? absAmount : -1 * absAmount;
+		int amount = 10;
+		Vector3 dir = left ? Vector3.up : -Vector3.up;
 		for (int i = 0; i < 90 / amount; i++) {
-			piece.transform.RotateAround (Vector3.zero, Vector3.up, amount);
+			piece.transform.RotateAround (Vector3.zero, dir, amount);
 			yield return new WaitForSeconds (0.05f);
 		}
 		yield return null;
