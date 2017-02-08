@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour {
 	public GameObject cube;
 	public Transform spawnPoint;
 
+	private Cube currentCubeScript = null;
 	private Cube oldCubeScript = null;
 
 	void Start () {
@@ -20,6 +21,7 @@ public class LevelManager : MonoBehaviour {
 			spawnPoint.position = newPos;
 			SpawnCube ();
 		}
+		currentCubeScript.CheckWin ();
 	}
 	
 	void SpawnCube () {
@@ -27,9 +29,9 @@ public class LevelManager : MonoBehaviour {
 			oldCubeScript.enabled = false;
 		}
 		cube = Instantiate (cube, spawnPoint.position, spawnPoint.rotation);
-		Cube cubeScript = cube.GetComponent <Cube> ();
-		cubeScript.height = spawnPoint.position.y;
-		cubeScript.enabled = true;
-		oldCubeScript = cubeScript;
+		currentCubeScript = cube.GetComponent <Cube> ();
+		currentCubeScript.height = spawnPoint.position.y;
+		currentCubeScript.enabled = true;
+		oldCubeScript = currentCubeScript;
 	}
 }
