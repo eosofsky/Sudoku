@@ -70,15 +70,10 @@ public class Planes : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        Material red = new Material(Shader.Find("Transparent/Diffuse"));
-        red.color = Color.red;
-
-        Material green = new Material(Shader.Find("Transparent/Diffuse"));
-        green.color = Color.green;
-
-        Material yellow = new Material(Shader.Find("Transparent/Diffuse"));
-        yellow.color = Color.yellow;
-
+        Material giraffe = Resources.Load("apartment_giraffe_occupied - Copy") as Material;
+        Material puma = Resources.Load("apartment_puma_occupied - Copy") as Material;
+        Material gorilla = Resources.Load("apartment_gorilla_occupied - Copy") as Material;
+        
         if (Input.GetButtonDown("Jump")) {
             _prevRenderer = null;
             _prevMaterial = null;
@@ -89,22 +84,21 @@ public class Planes : MonoBehaviour {
             Debug.Log("We held down 1");
             if (_prevRenderer != null)
             {
-
-                _prevRenderer.material = red;
-                _prevMaterial = red;
+                _prevRenderer.material = giraffe;
+                _prevMaterial = giraffe;
             }
         }
 
         if (Input.GetKey(KeyCode.Alpha2))
         {
-            _prevRenderer.material = green;
-            _prevMaterial = green;
+            _prevRenderer.material = puma;
+            _prevMaterial = puma;
         }
 
         if (Input.GetKey(KeyCode.Alpha3))
         {
-            _prevRenderer.material = yellow;
-            _prevMaterial = yellow;
+            _prevRenderer.material = gorilla;
+            _prevMaterial = gorilla;
         }
 
         // trigger when the user clicks the mouse
