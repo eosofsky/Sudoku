@@ -134,18 +134,15 @@ public class Cube : MonoBehaviour {
 		for (int r = 0; r < 3; r++) {
 			for (int c = 0; c < 3; c++) {
 				int i = r * 3 + c;
-				float val, min, mid, max;
+				float val;
 				if (front_or_back) {
 					val = face [i].transform.position.z;
-					min = -0.6f;
-					mid = 0.5f;
-					max = 1.6f;
 				} else {
 					val = face [i].transform.position.x;
-					min = -1.1f;
-					mid = 0f;
-					max = 1.1f;
 				}
+				float min = -1.1f;
+				float mid = 0f;
+				float max = 1.1f;
 				if (Mathf.Abs(val  - min) <= 0.1f) {
 					Swap (face, i, r * 3 + 0);
 				} else if (Mathf.Abs(val - mid) <= 0.1f) {
@@ -174,9 +171,9 @@ public class Cube : MonoBehaviour {
 			bool hasGorilla = false;
 			bool hasTiger = false;
 			for (int c = 0; c < 3; c++) {
-				Debug.Log (face [r * 3 + c].transform.position);
+				//Debug.Log ("row: " + r + " col: " + c + " " +face [r * 3 + c].transform.position);
 				string animal = face [r * 3 + c].GetComponent<MeshRenderer> ().materials [0].name;
-				Debug.Log ("row: " + r + "col: " + c + "animal: " + animal);
+				//Debug.Log ("row: " + r + "col: " + c + "animal: " + animal);
 				if (animal.Contains("giraffe")) {
 					hasGiraffe = true;
 				} else if (animal.Contains("gorilla")) {
@@ -197,6 +194,7 @@ public class Cube : MonoBehaviour {
 			bool hasTiger = false;
 			for (int r = 0; r < 3; r++) {
 				string animal = face [r * 3 + c].GetComponent<MeshRenderer> ().materials [0].name;
+				//Debug.Log ("row: " + r + "col: " + c + "animal: " + animal);
 				if (animal.Contains("giraffe")) {
 					hasGiraffe = true;
 				} else if (animal.Contains("gorilla")) {
@@ -208,6 +206,7 @@ public class Cube : MonoBehaviour {
 			if (!(hasGiraffe && hasGorilla && hasTiger)) {
 				return false;
 			}
+			//Debug.Log ("Col "+ c + " ok");
 		}
 
 		return true;
@@ -219,8 +218,8 @@ public class Cube : MonoBehaviour {
 		GameObject[] back = GameObject.FindGameObjectsWithTag ("Plane_C");
 		GameObject[] left = GameObject.FindGameObjectsWithTag ("Plane_D");
 
-		bool ans = CheckPlane (front, true) && CheckPlane(right, false) &&
-		    CheckPlane(back, true) && CheckPlane(left, false);
+		bool ans = CheckPlane (front, true) && CheckPlane (right, false) &&
+		    CheckPlane(back, true) & CheckPlane(left, false);
 		Debug.Log (ans);
 
 		return ans;
