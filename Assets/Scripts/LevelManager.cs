@@ -16,29 +16,24 @@ public class LevelManager : MonoBehaviour
         SpawnCube();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown("space"))
-        {
-            Vector3 newPos = spawnPoint.transform.position;
-            newPos.y += 3.3f;
-            spawnPoint.position = newPos;
-            SpawnCube();
-        }
-
-        currentCubeScript.CheckWin();
-    }
-
-    void SpawnCube()
-    {
-        if (oldCubeScript)
-        {
-            oldCubeScript.enabled = false;
-        }
-        cube = Instantiate(cube, spawnPoint.position, spawnPoint.rotation);
-        currentCubeScript = cube.GetComponent<Cube>();
-        currentCubeScript.height = spawnPoint.position.y;
-        currentCubeScript.enabled = true;
-        oldCubeScript = currentCubeScript;
-    }
+	void Update () {
+		if (Input.GetKeyDown ("space")) {
+			Vector3 newPos = spawnPoint.transform.position;
+			newPos.y += 3.3f;
+			spawnPoint.position = newPos;
+			SpawnCube ();
+		}
+		//currentCubeScript.CheckWin ();
+	}
+	
+	void SpawnCube () {
+		if (oldCubeScript) {
+			oldCubeScript.enabled = false;
+		}
+		cube = Instantiate (cube, spawnPoint.position, spawnPoint.rotation);
+		currentCubeScript = cube.GetComponent <Cube> ();
+		currentCubeScript.height = spawnPoint.position.y;
+		currentCubeScript.enabled = true;
+		oldCubeScript = currentCubeScript;
+	}
 }
