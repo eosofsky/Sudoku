@@ -111,13 +111,13 @@ public class Cube : MonoBehaviour {
 		int middle_index = 3;
 		int bottom_index = 6;
 		for (int i = 0; i < 9; i++) {
-			if (Mathf.Abs(plane[i].transform.position.y  - 0f) <= 0.1f) {
+			if (Mathf.Abs(plane[i].transform.position.y  - (0f + height)) <= 0.1f) {
 				face [bottom_index] = plane [i];
 				bottom_index++;
-			} else if (Mathf.Abs(plane[i].transform.position.y  - 1.1f) <= 0.1f) {
+			} else if (Mathf.Abs(plane[i].transform.position.y  - (1.1f + height)) <= 0.1f) {
 				face [middle_index] = plane [i];
 				middle_index++;
-			} else if (Mathf.Abs(plane[i].transform.position.y  - 2.2f) <= 0.1f) {
+			} else if (Mathf.Abs(plane[i].transform.position.y  - (2.2f + height)) <= 0.1f) {
 				face [top_index] = plane [i];
 				top_index++;
 			}
@@ -223,6 +223,19 @@ public class Cube : MonoBehaviour {
 		Debug.Log (ans);
 
 		return ans;
+	}
+
+	public void EndCube () {
+		GameObject[] front = GameObject.FindGameObjectsWithTag ("Plane_A");
+		GameObject[] right = GameObject.FindGameObjectsWithTag ("Plane_B");
+		GameObject[] back = GameObject.FindGameObjectsWithTag ("Plane_C");
+		GameObject[] left = GameObject.FindGameObjectsWithTag ("Plane_D");
+		for (int i = 0; i < 9; i++) {
+			front[i].tag = "Plane";
+			right[i].tag = "Plane";
+			back[i].tag = "Plane";
+			left[i].tag = "Plane";
+		}
 	}
 
 }

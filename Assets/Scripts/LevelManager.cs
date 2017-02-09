@@ -28,10 +28,11 @@ public class LevelManager : MonoBehaviour
 	
 	void SpawnCube () {
 		if (oldCubeScript) {
+			oldCubeScript.EndCube ();
 			oldCubeScript.enabled = false;
 		}
-		cube = Instantiate (cube, spawnPoint.position, spawnPoint.rotation);
-		currentCubeScript = cube.GetComponent <Cube> ();
+		GameObject currentCube = Instantiate (cube, spawnPoint.position, spawnPoint.rotation);
+		currentCubeScript = currentCube.GetComponent <Cube> ();
 		currentCubeScript.height = spawnPoint.position.y;
 		currentCubeScript.enabled = true;
 		oldCubeScript = currentCubeScript;
