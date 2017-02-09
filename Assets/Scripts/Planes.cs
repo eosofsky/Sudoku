@@ -11,6 +11,8 @@ public class Planes : MonoBehaviour {
     Material _red;
     Material _green;
     Material _yellow;
+
+    bool thisSucks = false; // :)
     
     /*
     public Button redButton;
