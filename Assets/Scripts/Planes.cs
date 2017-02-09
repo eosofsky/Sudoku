@@ -29,7 +29,8 @@ public class Planes : MonoBehaviour {
             // See if ray from camera to user click hits something
             if (Physics.Raycast(_click, out _clickHit))
             {
-                if (_clickHit.transform.tag == "Plane")
+				if ((_clickHit.transform.tag == "Plane_A") || (_clickHit.transform.tag == "Plane_B") ||
+					(_clickHit.transform.tag == "Plane_C") || (_clickHit.transform.tag == "Plane_D"))
                 {
                     PlaySelectedAnimation();
                 }

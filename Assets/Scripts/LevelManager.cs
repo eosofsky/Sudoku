@@ -21,7 +21,7 @@ public class LevelManager : MonoBehaviour {
 			spawnPoint.position = newPos;
 			SpawnCube ();
 		}
-		currentCubeScript.CheckWin ();
+		//currentCubeScript.CheckWin ();
 	}
 	
 	void SpawnCube () {
