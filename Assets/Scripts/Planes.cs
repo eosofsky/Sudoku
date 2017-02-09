@@ -70,9 +70,9 @@ public class Planes : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        Material giraffe = Resources.Load("apartment_giraffe_occupied - Copy") as Material;
-        Material puma = Resources.Load("apartment_puma_occupied - Copy") as Material;
-        Material gorilla = Resources.Load("apartment_gorilla_occupied - Copy") as Material;
+        Material giraffe = Resources.Load("giraffe_placed") as Material;
+        Material puma = Resources.Load("puma_placed") as Material;
+        Material gorilla = Resources.Load("gorilla_placed") as Material;
         
         if (Input.GetButtonDown("Jump")) {
             _prevRenderer = null;
@@ -81,7 +81,6 @@ public class Planes : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            Debug.Log("We held down 1");
             if (_prevRenderer != null)
             {
                 _prevRenderer.material = giraffe;
@@ -147,7 +146,6 @@ public class Planes : MonoBehaviour {
         }
         else
         {
-            Debug.Log("selected plane");
             // The current plane is now the previously selected one
             _prevRenderer = currentRenderer;
             _prevMaterial = _prevRenderer.material;
