@@ -136,15 +136,15 @@ public class Cube : MonoBehaviour {
 				int i = r * 3 + c;
 				float val, min, mid, max;
 				if (front_or_back) {
-					val = face [i].transform.position.x;
-					min = -1.1f;
-					mid = 0f;
-					max = 1.1f;
-				} else {
 					val = face [i].transform.position.z;
 					min = -0.6f;
 					mid = 0.5f;
 					max = 1.6f;
+				} else {
+					val = face [i].transform.position.x;
+					min = -1.1f;
+					mid = 0f;
+					max = 1.1f;
 				}
 				if (Mathf.Abs(val  - min) <= 0.1f) {
 					Swap (face, i, r * 3 + 0);
@@ -170,38 +170,42 @@ public class Cube : MonoBehaviour {
 
 		/* Check rows */
 		for (int r = 0; r < 3; r++) {
-			bool hasOne = false;
-			bool hasTwo = false;
-			bool hasThree = false;
+			bool hasGiraffe = false;
+			bool hasGorilla = false;
+			bool hasTiger = false;
 			for (int c = 0; c < 3; c++) {
-				/*if (face [r * 3 + c] == 1) {
-					hasOne = true;
-				} else if (face [r * 3 + c] == 2) {
-					hasTwo = true;
-				} else if (face [r * 3 + c] == 3) {
-					hasThree = true;
-				}*/
+				Debug.Log (face [r * 3 + c].transform.position);
+				string animal = face [r * 3 + c].GetComponent<MeshRenderer> ().materials [0].name;
+				Debug.Log ("row: " + r + "col: " + c + "animal: " + animal);
+				if (animal.Contains("giraffe")) {
+					hasGiraffe = true;
+				} else if (animal.Contains("gorilla")) {
+					hasGorilla = true;
+				} else if (animal.Contains("puma")) {
+					hasTiger = true;
+				}
 			}
-			if (!(hasOne && hasTwo && hasThree)) {
+			if (!(hasGiraffe && hasGorilla && hasTiger)) {
 				return false;
 			}
 		}
 
 		/* Check cols */
 		for (int c = 0; c < 3; c++) {
-			bool hasOne = false;
-			bool hasTwo = false;
-			bool hasThree = false;
+			bool hasGiraffe = false;
+			bool hasGorilla = false;
+			bool hasTiger = false;
 			for (int r = 0; r < 3; r++) {
-				/*if (face [r * 3 + c] == 1) {
-					hasOne = true;
-				} else if (face [r * 3 + c] == 2) {
-					hasTwo = true;
-				} else if (face [r * 3 + c] == 3) {
-					hasThree = true;
-				}*/
+				string animal = face [r * 3 + c].GetComponent<MeshRenderer> ().materials [0].name;
+				if (animal.Contains("giraffe")) {
+					hasGiraffe = true;
+				} else if (animal.Contains("gorilla")) {
+					hasGorilla = true;
+				} else if (animal.Contains("puma")) {
+					hasTiger = true;
+				}
 			}
-			if (!(hasOne && hasTwo && hasThree)) {
+			if (!(hasGiraffe && hasGorilla && hasTiger)) {
 				return false;
 			}
 		}
@@ -215,8 +219,11 @@ public class Cube : MonoBehaviour {
 		GameObject[] back = GameObject.FindGameObjectsWithTag ("Plane_C");
 		GameObject[] left = GameObject.FindGameObjectsWithTag ("Plane_D");
 
-		return CheckPlane (front, true) && CheckPlane(right, false) &&
+		bool ans = CheckPlane (front, true) && CheckPlane(right, false) &&
 		    CheckPlane(back, true) && CheckPlane(left, false);
+		Debug.Log (ans);
+
+		return ans;
 	}
 
 }
