@@ -70,15 +70,10 @@ public class Planes : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        Material red = new Material(Shader.Find("Transparent/Diffuse"));
-        red.color = Color.red;
-
-        Material green = new Material(Shader.Find("Transparent/Diffuse"));
-        green.color = Color.green;
-
-        Material yellow = new Material(Shader.Find("Transparent/Diffuse"));
-        yellow.color = Color.yellow;
-
+        Material giraffe = Resources.Load("giraffe_placed") as Material;
+        Material puma = Resources.Load("puma_placed") as Material;
+        Material gorilla = Resources.Load("gorilla_placed") as Material;
+        
         if (Input.GetButtonDown("Jump")) {
             _prevRenderer = null;
             _prevMaterial = null;
@@ -86,25 +81,23 @@ public class Planes : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            Debug.Log("We held down 1");
             if (_prevRenderer != null)
             {
-
-                _prevRenderer.material = red;
-                _prevMaterial = red;
+                _prevRenderer.material = giraffe;
+                _prevMaterial = giraffe;
             }
         }
 
         if (Input.GetKey(KeyCode.Alpha2))
         {
-            _prevRenderer.material = green;
-            _prevMaterial = green;
+            _prevRenderer.material = puma;
+            _prevMaterial = puma;
         }
 
         if (Input.GetKey(KeyCode.Alpha3))
         {
-            _prevRenderer.material = yellow;
-            _prevMaterial = yellow;
+            _prevRenderer.material = gorilla;
+            _prevMaterial = gorilla;
         }
 
         // trigger when the user clicks the mouse
@@ -153,7 +146,6 @@ public class Planes : MonoBehaviour {
         }
         else
         {
-            Debug.Log("selected plane");
             // The current plane is now the previously selected one
             _prevRenderer = currentRenderer;
             _prevMaterial = _prevRenderer.material;
