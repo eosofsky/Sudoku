@@ -43,4 +43,38 @@ public class Cube : MonoBehaviour {
 		yield return null;
 	}
 
+	void GetPlanes (GameObject[] face1, GameObject[] face2, GameObject[] face3, GameObject[] face4) {
+		int[] indices = new int[4];
+		for (int i = 0; i < 26; i++) {
+			// front and back
+			if (Mathf.Abs(pieces[i].transform.position.z  - 1.1f) <= 0.1) {
+				face1[indices[0]] = pieces[i];
+				indices [0]++;
+			} else if (Mathf.Abs(pieces[i].transform.position.z  - (-1.1f)) <= 0.1) {
+				face2[indices[1]] = pieces[i];
+				indices [1]++;
+			}
+
+			// left and right
+			if (Mathf.Abs(pieces[i].transform.position.x  - 1.1f) <= 0.1) {
+				face3[indices[2]] = pieces[i];
+				indices [2]++;
+			} else if (Mathf.Abs(pieces[i].transform.position.x  - (-1.1f)) <= 0.1) {
+				face4[indices[3]] = pieces[i];
+				indices [3]++;
+			}
+		}
+	}
+
+	public bool CheckWin () {
+		GameObject[] face1 = new GameObject[9]; // front
+		GameObject[] face2 = new GameObject[9]; // back
+		GameObject[] face3 = new GameObject[9]; // left
+		GameObject[] face4 = new GameObject[9]; // right
+
+		GetPlanes (face1, face2, face3, face4);
+
+		return true;
+	}
+
 }
