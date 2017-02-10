@@ -86,7 +86,7 @@ public class Planes : MonoBehaviour {
         if (Input.GetKey(KeyCode.Alpha1))
         {
             click.PlayOneShot(click_note);
-
+            
             if (_prevRenderer != null)
             {
                 _prevRenderer.material = giraffe;
