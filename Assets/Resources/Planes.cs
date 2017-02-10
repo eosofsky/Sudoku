@@ -83,7 +83,7 @@ public class Planes : MonoBehaviour {
             _prevMaterial = null;
         }
 
-        if (Input.GetKey(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             click.PlayOneShot(click_note);
             
@@ -94,7 +94,7 @@ public class Planes : MonoBehaviour {
             }
         }
 
-        if (Input.GetKey(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             click.PlayOneShot(click_note);
 
@@ -105,7 +105,7 @@ public class Planes : MonoBehaviour {
             }
         }
 
-        if (Input.GetKey(KeyCode.Alpha3))
+        if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             click.PlayOneShot(click_note);
 
@@ -138,9 +138,8 @@ public class Planes : MonoBehaviour {
     {
         var currentRenderer = _clickHit.transform.GetComponent<Renderer>();
         
-        // For now, we will just highlight it white
-        Material white = new Material(Shader.Find("Transparent/Diffuse"));
-        white.color = Color.white;
+        // For now, we'll highlight it in black
+        Material black = Resources.Load("black") as Material;
 
         if (_prevRenderer != null)
         {
@@ -158,7 +157,7 @@ public class Planes : MonoBehaviour {
                 _prevRenderer = currentRenderer;
                 _prevMaterial = _prevRenderer.material;
 
-                _prevRenderer.material = white;
+                _prevRenderer.material = black;
             }
         }
         else
@@ -167,7 +166,7 @@ public class Planes : MonoBehaviour {
             _prevRenderer = currentRenderer;
             _prevMaterial = _prevRenderer.material;
 
-            _prevRenderer.material = white;
+            _prevRenderer.material = black;
         }
     }
 
