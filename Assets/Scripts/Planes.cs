@@ -22,9 +22,13 @@ public class Planes : MonoBehaviour {
     Renderer _prevRenderer;
     Material _prevMaterial;
 
+    public AudioClip click_note;
+    AudioSource click;
+
     // Use this for initialization
     void Start ()
     {
+        click = GetComponent<AudioSource>();
         /*
         Button button_red = redButton.GetComponent<Button>();
         button_red.onClick.AddListener(RedButtonClicked);
@@ -81,6 +85,8 @@ public class Planes : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.Alpha1))
         {
+            click.PlayOneShot(click_note);
+
             if (_prevRenderer != null)
             {
                 _prevRenderer.material = giraffe;
@@ -90,20 +96,31 @@ public class Planes : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.Alpha2))
         {
-            _prevRenderer.material = puma;
-            _prevMaterial = puma;
+            click.PlayOneShot(click_note);
+
+            if (_prevRenderer != null)
+            {
+                _prevRenderer.material = puma;
+                _prevMaterial = puma;
+            }
         }
 
         if (Input.GetKey(KeyCode.Alpha3))
         {
-            _prevRenderer.material = gorilla;
-            _prevMaterial = gorilla;
+            click.PlayOneShot(click_note);
+
+            if (_prevRenderer != null)
+            {
+                _prevRenderer.material = gorilla;
+                _prevMaterial = gorilla;
+            }
         }
 
         // trigger when the user clicks the mouse
         if (Input.GetButtonUp("Fire1"))
         {
             _click = Camera.main.ScreenPointToRay(Input.mousePosition);
+
 
             // See if ray from camera to user click hits something
             if (Physics.Raycast(_click, out _clickHit))
