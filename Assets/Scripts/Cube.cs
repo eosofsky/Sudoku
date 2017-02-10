@@ -26,6 +26,36 @@ public class Cube : MonoBehaviour {
 
 	}
 
+	public void Randomize () {
+		/* Get between 0 and 10 rotations */
+		int num_r = (int)(Random.value * 10.0f);
+		for (int i = 0; i < num_r; i++) {
+
+			/* Choose a row randomly */
+			int row = 3;
+			while (row == 3) {
+				row = (int)(Random.value * 3.0f);
+			}
+			Debug.Log (row);
+
+
+			/* Choose a direction */
+			int left = 2;
+			while (left == 2) {
+				left = (int)(Random.value * 2.0f);
+			}
+			bool rot_left = (left == 1);
+
+			if (row == 0) {
+				rotateRow (0f, rot_left);
+			} else if (row == 1) {
+				rotateRow (1.1f, rot_left);
+			} else if (row == 2) {
+				rotateRow (2.2f, rot_left);
+			}
+		}
+	}
+
 	void rotateRow (float y, bool left) {
 		for (int i = 0; i < 26; i++) {
 			if (Mathf.Abs(pieces[i].transform.position.y  - (height + y)) <= 0.1) {
