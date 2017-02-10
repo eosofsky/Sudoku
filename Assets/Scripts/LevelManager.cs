@@ -35,6 +35,7 @@ public class LevelManager : MonoBehaviour
 		currentCubeScript = currentCube.GetComponent <Cube> ();
 		currentCubeScript.height = spawnPoint.position.y;
 		currentCubeScript.enabled = true;
+		currentCubeScript.Randomize ();
 		oldCubeScript = currentCubeScript;
 	}
 }
