@@ -19,7 +19,7 @@ public class Planes : MonoBehaviour {
     */
 
     // Information for the previously clicked object
-    Renderer _prevRenderer;
+    SpriteRenderer _prevRenderer;
     Material _prevMaterial;
 
     public AudioClip click_note;
@@ -121,25 +121,19 @@ public class Planes : MonoBehaviour {
         {
             _click = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-
+            int layerMask = 1 << 7;
             // See if ray from camera to user click hits something
-            if (Physics.Raycast(_click, out _clickHit))
+            if (Physics.Raycast(_click, out _clickHit, layerMask))
             {
-				if ((_clickHit.transform.tag == "Plane_A") || (_clickHit.transform.tag == "Plane_B") ||
-					(_clickHit.transform.tag == "Plane_C") || (_clickHit.transform.tag == "Plane_D"))
-                {
-                    PlaySelectedAnimation();
-                }
+                click.PlayOneShot(click_note);
+                PlaySelectedAnimation();
             }
         }
     }
 
     void PlaySelectedAnimation()
     {
-        var currentRenderer = _clickHit.transform.GetComponent<Renderer>();
-        
-        // For now, we'll highlight it in black
-        Material black = Resources.Load("black") as Material;
+        var currentRenderer = _clickHit.transform.GetComponent<SpriteRenderer>();
 
         if (_prevRenderer != null)
         {
@@ -156,8 +150,6 @@ public class Planes : MonoBehaviour {
                 // The current plane is now the previously selected one
                 _prevRenderer = currentRenderer;
                 _prevMaterial = _prevRenderer.material;
-
-                _prevRenderer.material = black;
             }
         }
         else
@@ -165,8 +157,6 @@ public class Planes : MonoBehaviour {
             // The current plane is now the previously selected one
             _prevRenderer = currentRenderer;
             _prevMaterial = _prevRenderer.material;
-
-            _prevRenderer.material = black;
         }
     }
 
