@@ -36,7 +36,7 @@ public class Cube : MonoBehaviour {
 			while (row == 3) {
 				row = (int)(Random.value * 3.0f);
 			}
-			Debug.Log (row);
+			//Debug.Log (row);
 
 
 			/* Choose a direction */
