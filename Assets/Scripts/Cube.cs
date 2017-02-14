@@ -7,6 +7,14 @@ public class Cube : MonoBehaviour {
 	public GameObject[] pieces;
 	public float height = 0f;
 
+	public Sprite giraffe_closed;
+	public Sprite gorilla_closed;
+	public Sprite puma_closed;
+
+	void Start () {
+		StartCube ();
+	}
+
 	void Update () {
 		if (Input.GetKeyDown ("a")) {
 			rotateRow (0f, true);
@@ -26,7 +34,7 @@ public class Cube : MonoBehaviour {
 
 	}
 
-	public void Randomize () {
+	private void Randomize () {
 		/* Get between 0 and 10 rotations */
 		int num_r = (int)(Random.value * 10.0f);
 		for (int i = 0; i < num_r; i++) {
@@ -36,8 +44,6 @@ public class Cube : MonoBehaviour {
 			while (row == 3) {
 				row = (int)(Random.value * 3.0f);
 			}
-			//Debug.Log (row);
-
 
 			/* Choose a direction */
 			int left = 2;
@@ -202,7 +208,7 @@ public class Cube : MonoBehaviour {
 			bool hasTiger = false;
 			for (int c = 0; c < 3; c++) {
 				//Debug.Log ("row: " + r + " col: " + c + " " +face [r * 3 + c].transform.position);
-				string animal = face [r * 3 + c].GetComponent<MeshRenderer> ().materials [0].name;
+				string animal = face [r * 3 + c].GetComponent<SpriteRenderer> ().sprite.name;
 				//Debug.Log ("row: " + r + "col: " + c + "animal: " + animal);
 				if (animal.Contains("giraffe")) {
 					hasGiraffe = true;
@@ -223,7 +229,7 @@ public class Cube : MonoBehaviour {
 			bool hasGorilla = false;
 			bool hasTiger = false;
 			for (int r = 0; r < 3; r++) {
-				string animal = face [r * 3 + c].GetComponent<MeshRenderer> ().materials [0].name;
+				string animal = face [r * 3 + c].GetComponent<SpriteRenderer> ().sprite.name;
 				//Debug.Log ("row: " + r + "col: " + c + "animal: " + animal);
 				if (animal.Contains("giraffe")) {
 					hasGiraffe = true;
@@ -236,7 +242,6 @@ public class Cube : MonoBehaviour {
 			if (!(hasGiraffe && hasGorilla && hasTiger)) {
 				return false;
 			}
-			//Debug.Log ("Col "+ c + " ok");
 		}
 
 		return true;
@@ -255,17 +260,58 @@ public class Cube : MonoBehaviour {
 		return ans;
 	}
 
+	private void CloseShutters (GameObject plane) {
+		/* Make plane non-clickable */
+		plane.layer = 0;
+		plane.tag = "Plane";
+
+		/* Close the shutters */
+		SpriteRenderer renderer = plane.GetComponent<SpriteRenderer> ();
+		if (renderer.sprite.name.Contains ("giraffe")) {
+			renderer.sprite = giraffe_closed;
+		} else if (renderer.sprite.name.Contains ("gorilla")) {
+			renderer.sprite = gorilla_closed;
+		} else if (renderer.sprite.name.Contains ("puma")) {
+			renderer.sprite = puma_closed;
+		}
+	}
+
+	private void MaybeLock (GameObject plane) {
+		SpriteRenderer renderer = plane.GetComponent<SpriteRenderer> ();
+		if ((renderer.sprite.name.Contains ("giraffe")) ||
+			(renderer.sprite.name.Contains ("gorilla")) ||
+			(renderer.sprite.name.Contains ("puma"))) {
+			plane.layer = LayerMask.NameToLayer("Default");
+		}
+	}
+
+	public void StartCube () {
+		GameObject[] front = GameObject.FindGameObjectsWithTag ("Plane_A");
+		GameObject[] right = GameObject.FindGameObjectsWithTag ("Plane_B");
+		GameObject[] back = GameObject.FindGameObjectsWithTag ("Plane_C");
+		GameObject[] left = GameObject.FindGameObjectsWithTag ("Plane_D");
+		for (int i = 0; i < 9; i++) {
+			MaybeLock (front [i]);
+			MaybeLock (right [i]);
+			MaybeLock (back [i]);
+			MaybeLock (left [i]);
+		}
+		Randomize ();
+	}
+
 	public void EndCube () {
 		GameObject[] front = GameObject.FindGameObjectsWithTag ("Plane_A");
 		GameObject[] right = GameObject.FindGameObjectsWithTag ("Plane_B");
 		GameObject[] back = GameObject.FindGameObjectsWithTag ("Plane_C");
 		GameObject[] left = GameObject.FindGameObjectsWithTag ("Plane_D");
 		for (int i = 0; i < 9; i++) {
-			front[i].tag = "Plane";
-			right[i].tag = "Plane";
-			back[i].tag = "Plane";
-			left[i].tag = "Plane";
+			CloseShutters (front[i]);
+			CloseShutters (right[i]);
+			CloseShutters (back[i]);
+			CloseShutters (left[i]);
 		}
+		Planes planesScript = gameObject.GetComponent<Planes> ();
+		planesScript.ResetPrevObject ();
 	}
 
 }

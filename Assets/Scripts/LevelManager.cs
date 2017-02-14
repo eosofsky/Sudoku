@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
     public Transform spawnPoint;
     
     private Cube currentCubeScript = null;
-    private Cube oldCubeScript = null;
+	private GameObject oldCube = null;
 
     void Start()
     {
@@ -27,15 +27,18 @@ public class LevelManager : MonoBehaviour
 	}
 	
 	void SpawnCube () {
-		if (oldCubeScript) {
+		if (oldCube) {
+			oldCube.tag = "Untagged";
+			Cube oldCubeScript = oldCube.GetComponent<Cube> ();
 			oldCubeScript.EndCube ();
 			oldCubeScript.enabled = false;
 		}
-		GameObject currentCube = Instantiate (cube, spawnPoint.position, spawnPoint.rotation);
+		Instantiate (cube, spawnPoint.position, spawnPoint.rotation);
+		GameObject currentCube = GameObject.FindGameObjectWithTag("Current_Cube");
 		currentCubeScript = currentCube.GetComponent <Cube> ();
 		currentCubeScript.height = spawnPoint.position.y;
 		currentCubeScript.enabled = true;
-		currentCubeScript.Randomize ();
-		oldCubeScript = currentCubeScript;
+		//currentCubeScript.StartCube ();
+		oldCube = currentCube;
 	}
 }
