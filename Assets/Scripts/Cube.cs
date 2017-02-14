@@ -262,7 +262,7 @@ public class Cube : MonoBehaviour {
 
 	private void CloseShutters (GameObject plane) {
 		/* Make plane non-clickable */
-		plane.layer = 0;
+		//plane.layer = 0;
 		plane.tag = "Plane";
 
 		/* Close the shutters */

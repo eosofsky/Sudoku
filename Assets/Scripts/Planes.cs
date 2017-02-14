@@ -85,7 +85,7 @@ public class Planes : MonoBehaviour {
 
 			int layerMask = (1 << 8);
             // See if ray from camera to user click hits something
-            if (Physics.Raycast(_click, out _clickHit, 10000, layerMask))
+            if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
             {
                 PlaySelectedAnimation();
             }
