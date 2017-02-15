@@ -18,8 +18,8 @@ public class WaveController : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        min_velocity = 0.0005f;
-        max_velocity = 0.05f;
+        min_velocity = 0.0025f;
+        max_velocity = 0.0075f;
         
         // If rising, wave will go until hits the distance_traveled >= magnitude
         // If going down, wave will go until hits distance_traveled <= 0;
