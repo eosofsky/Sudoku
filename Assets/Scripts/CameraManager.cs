@@ -22,12 +22,11 @@ public class CameraManager : MonoBehaviour {
 		} else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 			StartCoroutine (rotateCamera (true));
 		}
+	}
 
-		/* Reposition Camera when a new cube is spawned */
-		if (Input.GetKeyDown ("space")) {
-			endPos.y += 3.3f;
-			movingCamera = true;
-		}
+	public void UpdateCamera () {
+		endPos.y += 3.3f;
+		movingCamera = true;
 	}
 
 	void FixedUpdate () {

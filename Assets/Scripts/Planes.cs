@@ -44,7 +44,7 @@ public class Planes : MonoBehaviour {
     void Update () {        
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (_prevObject != null)
+			if (_prevObject != null && !_prevObject.CompareTag("Plane"))
             {
                 click.PlayOneShot(click_note);
                 
@@ -56,7 +56,7 @@ public class Planes : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (_prevObject != null)
+			if (_prevObject != null && !_prevObject.CompareTag("Plane"))
             {
                 click.PlayOneShot(click_note);
 
@@ -68,7 +68,7 @@ public class Planes : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (_prevObject != null)
+			if (_prevObject != null && !_prevObject.CompareTag("Plane"))
             {
                 click.PlayOneShot(click_note);
 
@@ -83,18 +83,26 @@ public class Planes : MonoBehaviour {
         {
             _click = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            int layerMask = (1 << 8);
+			int layerMask = (1 << 8);
             // See if ray from camera to user click hits something
-            if (Physics.Raycast(_click, out _clickHit, 10000, layerMask))
+            if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
             {
                 PlaySelectedAnimation();
             }
         }
     }
 
+	public void ResetPrevObject () {
+		_prevObject = null;
+	}
+
     void PlaySelectedAnimation()
     {
         var currentObject = _clickHit.transform.gameObject;
+
+		if (currentObject.CompareTag ("Plane")) {
+			return;
+		}
 
         if (_prevObject != null)
         {
