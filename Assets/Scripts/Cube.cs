@@ -28,10 +28,7 @@ public class Cube : MonoBehaviour {
 			rotateRow (1.1f, false);
 		} else if (Input.GetKeyDown ("h")) {
 			rotateRow (2.2f, false);
-		} else if (Input.GetKeyDown ("j")) {
-			CheckWin ();
 		}
-
 	}
 
 	private void Randomize () {
@@ -313,5 +310,4 @@ public class Cube : MonoBehaviour {
 		Planes planesScript = gameObject.GetComponent<Planes> ();
 		planesScript.ResetPrevObject ();
 	}
-
 }
