@@ -23,13 +23,13 @@ public class Cube : MonoBehaviour {
 		if (Input.GetKeyDown ("a")) {
 			rotateRow (0f, true);
 		} else if (Input.GetKeyDown ("s")) {
-			rotateRow (1.1f, true);
-		} else if (Input.GetKeyDown ("d")) {
-			rotateRow (2.2f, true);
-		} else if (Input.GetKeyDown ("f")) {
 			rotateRow (0f, false);
-		} else if (Input.GetKeyDown ("g")) {
+		} else if (Input.GetKeyDown ("d")) {
+			rotateRow (1.1f, true);
+		} else if (Input.GetKeyDown ("f")) {
 			rotateRow (1.1f, false);
+		} else if (Input.GetKeyDown ("g")) {
+			rotateRow (2.2f, true);
 		} else if (Input.GetKeyDown ("h")) {
 			rotateRow (2.2f, false);
 		}
