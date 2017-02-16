@@ -14,12 +14,6 @@ public class Planes : MonoBehaviour {
     public Sprite _puma;
     public Sprite _room;
 
-    /*
-    public Button redButton;
-    public Button greenButton;
-    public Button yellowButton;
-    */
-
     // Information for the previously clicked object
     GameObject _prevObject;
     Sprite _prevSprite;
@@ -31,13 +25,6 @@ public class Planes : MonoBehaviour {
     void Start ()
     {
         click = GetComponent<AudioSource>();
-
-        /*
-        Button button_red = redButton.GetComponent<Button>();
-        button_red.onClick.AddListener(RedButtonClicked);
-        greenButton.onClick.AddListener(GreenButtonClicked);
-        yellowButton.onClick.AddListener(YellowButtonClicked);
-        */
     }
 
     // Update is called once per frame
@@ -48,7 +35,6 @@ public class Planes : MonoBehaviour {
             {
                 click.PlayOneShot(click_note);
                 
-                //Destroy(_prevObject.GetComponent<SpriteRenderer>().sprite);
                 _prevObject.GetComponent<SpriteRenderer>().sprite = _giraffe;
                 _prevSprite = _giraffe;
             }
@@ -59,8 +45,7 @@ public class Planes : MonoBehaviour {
 			if (_prevObject != null && !_prevObject.CompareTag("Plane"))
             {
                 click.PlayOneShot(click_note);
-
-                //Destroy(_prevObject.GetComponent<SpriteRenderer>().sprite);
+                
                 _prevObject.GetComponent<SpriteRenderer>().sprite = _puma;
                 _prevSprite = _puma;
             }
@@ -71,8 +56,7 @@ public class Planes : MonoBehaviour {
 			if (_prevObject != null && !_prevObject.CompareTag("Plane"))
             {
                 click.PlayOneShot(click_note);
-
-                //Destroy(_prevObject.GetComponent<SpriteRenderer>().sprite);
+                
                 _prevObject.GetComponent<SpriteRenderer>().sprite = _gorilla;
                 _prevSprite = _gorilla;
             }
@@ -137,40 +121,3 @@ public class Planes : MonoBehaviour {
         // currently does nothing?
     }
 }
-
-
-
-/*
- *  For debugging, it is red button; all buttons should be changed to respective animals
- *  in the future.
- *
-public void RedButtonClicked()
-{
-    Debug.LogFormat("Is a renderer selected? {0}", _prevRenderer);
-    if (_prevRenderer != null)
-    {
-        _prevRenderer.material = _red;
-        _prevMaterial = _red;
-    }
-}
-
-public void GreenButtonClicked()
-{
-    Debug.LogFormat("Is a renderer selected? {0}", _prevRenderer);
-    if (_prevRenderer != null)
-    {
-        _prevRenderer.material = _green;
-        _prevMaterial = _green;
-    }
-}
-
-public void YellowButtonClicked()
-{
-    Debug.LogFormat("Is a renderer selected? {0}", _prevRenderer);
-    if (_prevRenderer != null)
-    {
-        _prevRenderer.material = _yellow;
-        _prevMaterial = _yellow;
-    }
-}
-*/
