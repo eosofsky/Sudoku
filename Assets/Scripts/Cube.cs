@@ -7,11 +7,15 @@ public class Cube : MonoBehaviour {
 	public GameObject[] pieces;
 	public float height = 0f;
 
+	public Sprite unoccupied;
 	public Sprite giraffe_closed;
 	public Sprite gorilla_closed;
 	public Sprite puma_closed;
 
+	private LevelGenerator level_generator;
+
 	void Start () {
+		level_generator = GameObject.FindGameObjectWithTag("Manager").GetComponent<LevelGenerator> ();
 		StartCube ();
 	}
 
@@ -19,13 +23,13 @@ public class Cube : MonoBehaviour {
 		if (Input.GetKeyDown ("a")) {
 			rotateRow (0f, true);
 		} else if (Input.GetKeyDown ("s")) {
-			rotateRow (1.1f, true);
-		} else if (Input.GetKeyDown ("d")) {
-			rotateRow (2.2f, true);
-		} else if (Input.GetKeyDown ("f")) {
 			rotateRow (0f, false);
-		} else if (Input.GetKeyDown ("g")) {
+		} else if (Input.GetKeyDown ("d")) {
+			rotateRow (1.1f, true);
+		} else if (Input.GetKeyDown ("f")) {
 			rotateRow (1.1f, false);
+		} else if (Input.GetKeyDown ("g")) {
+			rotateRow (2.2f, true);
 		} else if (Input.GetKeyDown ("h")) {
 			rotateRow (2.2f, false);
 		}
@@ -252,7 +256,7 @@ public class Cube : MonoBehaviour {
 
 		bool ans = CheckPlane (front, true) && CheckPlane (right, false) &&
 		    CheckPlane(back, true) & CheckPlane(left, false);
-		Debug.Log (ans);
+		//Debug.Log (ans);
 
 		return ans;
 	}
@@ -282,11 +286,39 @@ public class Cube : MonoBehaviour {
 		}
 	}
 
+	private void AssignSprite(GameObject plane, int id) {
+		SpriteRenderer renderer = plane.GetComponent<SpriteRenderer> ();
+		if (id == -1) {
+			renderer.sprite = unoccupied;
+		} else if (id == 1) {
+			renderer.sprite = giraffe_closed;
+		} else if (id == 2) {
+			renderer.sprite = puma_closed;
+		} else {
+			renderer.sprite = gorilla_closed;
+		}
+	}
+
+	private void AssignPuzzleToFace (GameObject[] plane, bool front_or_back) {
+		int[] level = level_generator.GetLevel ();
+		GameObject[] face = MakeFace (plane, front_or_back);
+		for (int i = 0; i < 9; i++) {
+			AssignSprite (face [i], level [i]);
+		}
+	}
+
 	public void StartCube () {
 		GameObject[] front = GameObject.FindGameObjectsWithTag ("Plane_A");
 		GameObject[] right = GameObject.FindGameObjectsWithTag ("Plane_B");
 		GameObject[] back = GameObject.FindGameObjectsWithTag ("Plane_C");
 		GameObject[] left = GameObject.FindGameObjectsWithTag ("Plane_D");
+
+		/* Assign a random puzzle */
+		AssignPuzzleToFace (front, true);
+		AssignPuzzleToFace (right, false);
+		AssignPuzzleToFace (back, true);
+		AssignPuzzleToFace (left, false);
+
 		for (int i = 0; i < 9; i++) {
 			MaybeLock (front [i]);
 			MaybeLock (right [i]);
