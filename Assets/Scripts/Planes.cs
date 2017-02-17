@@ -31,7 +31,6 @@ public class Planes : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        KeyClicks();
         Vector3 offset = new Vector3(0.0f, 0.0f, 0.0f);
 
         if (Input.GetButtonDown("Fire1"))
@@ -66,15 +65,6 @@ public class Planes : MonoBehaviour {
             }
         }
 
-        /*if (Input.GetButton("Fire1") && _animalSelected != null)
-        {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            _animalSelected.transform.position = new Vector3(
-                ray.origin.x + offset.x,
-                _animalSelected.transform.position.y + offset.y, 
-                ray.origin.z);
-        }*/
-
         // trigger when the user clicks the mouse
         if (Input.GetButtonUp("Fire1") && _animalSelected != null)
         {
@@ -85,42 +75,6 @@ public class Planes : MonoBehaviour {
             if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
             {
                 PlaySelectedAnimation();
-            }
-        }
-    }
-
-    void KeyClicks()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            if (_prevObject != null && !_prevObject.CompareTag("Plane"))
-            {
-                click.PlayOneShot(click_note);
-
-                _prevObject.GetComponent<SpriteRenderer>().sprite = _giraffe;
-                _prevSprite = _giraffe;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (_prevObject != null && !_prevObject.CompareTag("Plane"))
-            {
-                click.PlayOneShot(click_note);
-
-                _prevObject.GetComponent<SpriteRenderer>().sprite = _puma;
-                _prevSprite = _puma;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            if (_prevObject != null && !_prevObject.CompareTag("Plane"))
-            {
-                click.PlayOneShot(click_note);
-
-                _prevObject.GetComponent<SpriteRenderer>().sprite = _gorilla;
-                _prevSprite = _gorilla;
             }
         }
     }
