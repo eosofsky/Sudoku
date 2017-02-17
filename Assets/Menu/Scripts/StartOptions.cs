@@ -9,6 +9,7 @@ public class StartOptions : MonoBehaviour {
 
 
 	public int sceneToStart = 1;										//Index number in build settings of scene to load if changeScenes is true
+	public int instScene = 1;										    //Index number in build settings of scene to load for instruction screen
 	public bool changeScenes;											//If true, load a new scene when Start is pressed, if false, fade out UI and continue in single scene
 	public bool changeMusicOnStart;										//Choose whether to continue playing menu music or start a new music clip
 
@@ -96,6 +97,18 @@ public class StartOptions : MonoBehaviour {
 		SceneManager.LoadScene (sceneToStart);
 	}
 
+	public void LoadDelayedInst()
+	{
+		//Pause button now works if escape is pressed since we are no longer in Main menu.
+		inMainMenu = false;
+
+		//Hide the main menu UI element
+		showPanels.HideMenu ();
+
+		//Load the selected scene, by scene index number in build settings
+		SceneManager.LoadScene (instScene);
+	}
+
 	public void HideDelayed()
 	{
 		//Hide the main menu UI element after fading out menu for start game in scene
@@ -127,5 +140,14 @@ public class StartOptions : MonoBehaviour {
 		playMusic.FadeUp (fastFadeIn);
 		//Play music clip assigned to mainMusic in PlayMusic script
 		playMusic.PlaySelectedMusic (1);
+	}
+
+	public void InstButtonClicked()
+	{
+		//Use invoke to delay calling of LoadDelayed by half the length of fadeColorAnimationClip
+		Invoke ("LoadDelayedInst", fadeColorAnimationClip.length * .5f);
+
+		//Set the trigger of Animator animColorFade to start transition to the FadeToOpaque state.
+		animColorFade.SetTrigger ("fade");
 	}
 }
