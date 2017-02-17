@@ -13,6 +13,8 @@ public class LevelManager : MonoBehaviour
 	private GameObject oldCube = null;
 	private ScoreManager scoreManager;
 	private CameraManager cameraManager;
+
+    private Vector3 easeUp;
     private float _timePassed; // total time passed
     private float _ebb; // the amount the wave has raised at this level
     private bool _haveWon; // check if the user has won before
@@ -33,7 +35,15 @@ public class LevelManager : MonoBehaviour
         _timePassed += Time.deltaTime;
         if (_timePassed > 10 && _haveWon)
         {
-            RaiseWave();
+            if (wave.transform.position.y < easeUp.y)
+            {
+                RaiseWave(0.025f);
+            }
+            else
+            {
+                RaiseWave(0.01f);
+                _timePassed = 0;
+            }
 
             //check lose condition
             if (_ebb > 0.50f)
@@ -52,7 +62,7 @@ public class LevelManager : MonoBehaviour
 			newPos.y += 3.3f;
 			spawnPoint.position = newPos;
             newPos.y -= 0.7f;
-            wave.transform.position = newPos;
+            easeUp = newPos;
 
 			SpawnCube ();
 
@@ -85,14 +95,14 @@ public class LevelManager : MonoBehaviour
         wave = Instantiate(wave, wavePosition, spawnPoint.rotation);
     }
 
-    void RaiseWave ()
+    void RaiseWave (float distance)
     {
         var newPosition = new Vector3(
             wave.transform.position.x,
-            wave.transform.position.y + 0.025f,
+            wave.transform.position.y + distance,
             wave.transform.position.z);
 
         wave.transform.position = newPosition;
-        _ebb += 0.025f;
+        _ebb += distance;
     }
 }
