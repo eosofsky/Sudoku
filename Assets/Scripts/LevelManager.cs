@@ -41,7 +41,7 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                RaiseWave(0.01f);
+                RaiseWave(0.015f);
                 _timePassed = 0;
             }
 
@@ -49,6 +49,7 @@ public class LevelManager : MonoBehaviour
             if (_ebb > 0.50f)
             {
                 // we lose
+				Application.LoadLevel ("Scene1");
             }
         }
 
