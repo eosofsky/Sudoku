@@ -29,9 +29,7 @@ public class LevelManager : MonoBehaviour
 	void Update () {
         if (_frameCount % 20 == 0)
         {
-            Debug.Log("Raising Wave");
-
-            RaiseWave();
+            //RaiseWave();
             //check lose condition
         }
 

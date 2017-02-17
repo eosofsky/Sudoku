@@ -14,6 +14,8 @@ public class Planes : MonoBehaviour {
     public Sprite _puma;
     public Sprite _room;
 
+    private GameObject _animalSelected = null;
+
     // Information for the previously clicked object
     GameObject _prevObject;
     Sprite _prevSprite;
@@ -28,13 +30,73 @@ public class Planes : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {        
+    void Update () {
+        KeyClicks();
+        Vector3 offset = new Vector3(0.0f, 0.0f, 0.0f);
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            _click = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            int layerMask = (1 << 9);
+            if (Physics.Raycast(_click, out _clickHit, 500, layerMask))
+            {
+                Debug.Log("Hit!");
+                if (_clickHit.transform.tag == "Giraffe")
+                {
+                    _animalSelected = _clickHit.transform.gameObject;
+
+                    offset = _animalSelected.transform.position - _click.origin;
+                }
+
+                if (_clickHit.transform.tag == "Gorilla")
+                {
+                    _animalSelected = _clickHit.transform.gameObject;
+
+                    offset = _animalSelected.transform.position - _click.origin;
+                }
+
+                if (_clickHit.transform.tag == "Puma")
+                {
+                    _animalSelected = _clickHit.transform.gameObject;
+
+                    offset = _animalSelected.transform.position - _click.origin;
+                }
+                Debug.LogFormat("Animal Selected : {0}", _animalSelected);
+            }
+        }
+
+        /*if (Input.GetButton("Fire1") && _animalSelected != null)
+        {
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            _animalSelected.transform.position = new Vector3(
+                ray.origin.x + offset.x,
+                _animalSelected.transform.position.y + offset.y, 
+                ray.origin.z);
+        }*/
+
+        // trigger when the user clicks the mouse
+        if (Input.GetButtonUp("Fire1") && _animalSelected != null)
+        {
+            _click = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            int layerMask = (1 << 8);
+            // See if ray from camera to user click hits something
+            if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
+            {
+                PlaySelectedAnimation();
+            }
+        }
+    }
+
+    void KeyClicks()
+    {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-			if (_prevObject != null && !_prevObject.CompareTag("Plane"))
+            if (_prevObject != null && !_prevObject.CompareTag("Plane"))
             {
                 click.PlayOneShot(click_note);
-                
+
                 _prevObject.GetComponent<SpriteRenderer>().sprite = _giraffe;
                 _prevSprite = _giraffe;
             }
@@ -42,10 +104,10 @@ public class Planes : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-			if (_prevObject != null && !_prevObject.CompareTag("Plane"))
+            if (_prevObject != null && !_prevObject.CompareTag("Plane"))
             {
                 click.PlayOneShot(click_note);
-                
+
                 _prevObject.GetComponent<SpriteRenderer>().sprite = _puma;
                 _prevSprite = _puma;
             }
@@ -53,25 +115,12 @@ public class Planes : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-			if (_prevObject != null && !_prevObject.CompareTag("Plane"))
+            if (_prevObject != null && !_prevObject.CompareTag("Plane"))
             {
                 click.PlayOneShot(click_note);
-                
+
                 _prevObject.GetComponent<SpriteRenderer>().sprite = _gorilla;
                 _prevSprite = _gorilla;
-            }
-        }
-
-        // trigger when the user clicks the mouse
-        if (Input.GetButtonUp("Fire1"))
-        {
-            _click = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-			int layerMask = (1 << 8);
-            // See if ray from camera to user click hits something
-            if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
-            {
-                PlaySelectedAnimation();
             }
         }
     }
@@ -90,26 +139,45 @@ public class Planes : MonoBehaviour {
 
         if (_prevObject != null)
         {
-            if (currentObject.Equals(_prevObject))
-            {
-                // Deselect the current selected plane
-                RestorePreviousState();
-            }
-            else
-            {
-                // Deselect the last selected plane
-                RestorePreviousState();
+            // Deselect the last selected plane
+            RestorePreviousState();
 
-                // The current plane is now the _prevObject 
-                _prevObject = currentObject;
-                _prevSprite = currentObject.GetComponent<SpriteRenderer>().sprite;
-            }
+            // The current plane is now the _prevObject 
+            _prevObject = currentObject;
+            _prevSprite = currentObject.GetComponent<SpriteRenderer>().sprite;
         }
         else
         {
             // The current plane is now the previously selected one
             _prevObject = currentObject;
             _prevSprite = _prevObject.GetComponent<SpriteRenderer>().sprite;
+        }
+
+        Debug.LogFormat("Animal selected : {0}", _animalSelected);
+        if (_animalSelected != null)
+        {
+            if (_animalSelected.tag.Equals("Giraffe"))
+            {
+                click.PlayOneShot(click_note);
+                _prevObject.GetComponent<SpriteRenderer>().sprite = _giraffe;
+                _prevSprite = _gorilla;
+            }
+
+            if (_animalSelected.tag.Equals("Gorilla"))
+            {
+                click.PlayOneShot(click_note);
+                _prevObject.GetComponent<SpriteRenderer>().sprite = _gorilla;
+                _prevSprite = _gorilla;
+            }
+
+            if (_animalSelected.tag.Equals("Puma"))
+            {
+                click.PlayOneShot(click_note);
+                _prevObject.GetComponent<SpriteRenderer>().sprite = _puma;
+                _prevSprite = _puma;
+            }
+
+            _animalSelected = null;
         }
     }
 
