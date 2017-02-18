@@ -17,12 +17,19 @@ public class LevelManager : MonoBehaviour
     private Vector3 easeUp;
     private float _timePassed; // total time passed
     private float _ebb; // the amount the wave has raised at this level
+
     private bool _haveWon; // check if the user has won before
+    private int _timesWon;
+    private int _timesRaised;
+    private float _deltaDistance;
+
+    private float _lossHeight; // How high wave raises into cube to cause user loss
 
     void Start()
     {
         _haveWon = false;
         _timePassed = 0.0f;
+        _lossHeight = 1.70f;
 
 		scoreManager = GameObject.FindGameObjectWithTag ("Score_Manager").GetComponent<ScoreManager> ();
 		cameraManager = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraManager> ();
@@ -33,28 +40,40 @@ public class LevelManager : MonoBehaviour
 
 	void Update () {
         _timePassed += Time.deltaTime;
-        if (_timePassed > 10 && _haveWon)
+        if (_haveWon && _timesRaised < _timesWon)
         {
             if (wave.transform.position.y < easeUp.y)
             {
-                RaiseWave(0.025f);
+                RaiseWave(0.02f);
             }
             else
             {
-                RaiseWave(0.015f);
-                _timePassed = 0;
+                _timesRaised++;
+            }
+        }
+
+        if (_timePassed >= 7.0f && _haveWon)
+        {
+            RaiseWave(0.01f);
+            _deltaDistance += .01f;
+
+            if (_deltaDistance > 0.05f)
+            {
+                _timePassed = 0.0f;
+                _deltaDistance = 0.0f;
             }
 
             //check lose condition
-            if (_ebb > 0.50f)
+            if (_ebb > (easeUp.y + _lossHeight))
             {
                 // we lose
-				Application.LoadLevel ("Scene1");
+                Application.LoadLevel("Scene1");
             }
         }
 
 		if (currentCubeScript.CheckWin ()) { /* Cube complete */
             _haveWon = true;
+            _timesWon++;
 			/* Update score */
 			scoreManager.UpdateScore ();
 
@@ -98,11 +117,13 @@ public class LevelManager : MonoBehaviour
 
     void RaiseWave (float distance)
     {
+        Debug.LogFormat("distance {0}", distance);
         var newPosition = new Vector3(
             wave.transform.position.x,
             wave.transform.position.y + distance,
             wave.transform.position.z);
 
+        Debug.LogFormat("old position {0}; new position {1}", wave.transform.position, newPosition);
         wave.transform.position = newPosition;
         _ebb += distance;
     }

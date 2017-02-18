@@ -48,7 +48,7 @@ public class CameraManager : MonoBehaviour {
 		for (int i = 0; i < 90 / amount; i++) {
 			camera.transform.RotateAround (Vector3.zero, dir, amount);
 			light.transform.RotateAround (Vector3.zero, dir, amount);
-			wave.transform.RotateAround (Vector3.zero, dir, amount);
+			//wave.transform.RotateAround (Vector3.zero, dir, amount);
 			yield return new WaitForSeconds (0.05f);
 		}
 		yield return null;
