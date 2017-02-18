@@ -117,13 +117,11 @@ public class LevelManager : MonoBehaviour
 
     void RaiseWave (float distance)
     {
-        Debug.LogFormat("distance {0}", distance);
         var newPosition = new Vector3(
             wave.transform.position.x,
             wave.transform.position.y + distance,
             wave.transform.position.z);
 
-        Debug.LogFormat("old position {0}; new position {1}", wave.transform.position, newPosition);
         wave.transform.position = newPosition;
         _ebb += distance;
     }
