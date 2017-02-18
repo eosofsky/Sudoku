@@ -61,7 +61,6 @@ public class Planes : MonoBehaviour {
 
                     offset = _animalSelected.transform.position - _click.origin;
                 }
-                Debug.LogFormat("Animal Selected : {0}", _animalSelected);
             }
         }
 
