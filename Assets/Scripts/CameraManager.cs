@@ -6,14 +6,12 @@ public class CameraManager : MonoBehaviour {
 
 	private Camera camera;
 	private GameObject light;
-	private GameObject wave;
 	private Vector3 endPos; 
 	private bool movingCamera;
 
 	void Start () {
 		camera = GetComponent<Camera> ();
 		light = GameObject.FindGameObjectWithTag ("Light");
-		wave = GameObject.FindGameObjectWithTag ("Wave");
 		endPos = camera.transform.position;
 		movingCamera = false;
 	}
@@ -48,7 +46,8 @@ public class CameraManager : MonoBehaviour {
 		for (int i = 0; i < 90 / amount; i++) {
 			camera.transform.RotateAround (Vector3.zero, dir, amount);
 			light.transform.RotateAround (Vector3.zero, dir, amount);
-			//wave.transform.RotateAround (Vector3.zero, dir, amount);
+			GameObject wave = GameObject.FindGameObjectWithTag ("Wave");
+			wave.transform.RotateAround (Vector3.zero, dir, amount);
 			yield return new WaitForSeconds (0.05f);
 		}
 		yield return null;
