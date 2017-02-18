@@ -286,6 +286,27 @@ public class Cube : MonoBehaviour {
 		}
 	}
 
+	private void ClearFace(GameObject[] face) {
+		for (int i = 0; i < face.Length; i++) {
+			SpriteRenderer renderer = face[i].GetComponent<SpriteRenderer> ();
+			if (!renderer.sprite.name.Contains ("occupied")) {
+				renderer.sprite = unoccupied;
+			}
+		}
+	}
+
+	public void Clear () {
+		GameObject[] front = GameObject.FindGameObjectsWithTag ("Plane_A");
+		GameObject[] right = GameObject.FindGameObjectsWithTag ("Plane_B");
+		GameObject[] back = GameObject.FindGameObjectsWithTag ("Plane_C");
+		GameObject[] left = GameObject.FindGameObjectsWithTag ("Plane_D");
+
+		ClearFace (front);
+		ClearFace (right);
+		ClearFace (back);
+		ClearFace (left);
+	}
+
 	private void AssignSprite(GameObject plane, int id) {
 		SpriteRenderer renderer = plane.GetComponent<SpriteRenderer> ();
 		if (id == -1) {

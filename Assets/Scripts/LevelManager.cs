@@ -106,6 +106,12 @@ public class LevelManager : MonoBehaviour
 		oldCube = currentCube;
 	}
 
+	public void ClearCurrentCube () {
+		if (currentCubeScript) {
+			currentCubeScript.Clear ();
+		}
+	}
+
     void SpawnWave ()
     {
         var wavePosition = new Vector3(
