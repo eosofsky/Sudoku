@@ -15,6 +15,8 @@ public class Planes : MonoBehaviour {
     public Sprite _room;
 
     private GameObject _animalSelected = null;
+    private float _distance;
+    private Vector3 _offset;
 
     // Information for the previously clicked object
     GameObject _prevObject;
@@ -31,16 +33,14 @@ public class Planes : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        Vector3 offset;
-
         if (Input.GetButtonDown("Fire1"))
         {
-            GrabAnimal(out offset);
+            GrabAnimal();
         }
 
         if (Input.GetButton("Fire1") && _animalSelected != null)
         {
-
+            DragAnimal();
         }
 
         // trigger when the user clicks the mouse
@@ -50,9 +50,8 @@ public class Planes : MonoBehaviour {
         }
     }
 
-    void GrabAnimal(out Vector3 offset)
+    void GrabAnimal()
     {
-        offset = new Vector3(0.0f, 0.0f, 0.0f);
         _click = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         int layerMask = (1 << 9);
@@ -62,24 +61,41 @@ public class Planes : MonoBehaviour {
             if (_clickHit.transform.tag == "Giraffe")
             {
                 _animalSelected = _clickHit.transform.gameObject;
-
-                offset = _animalSelected.transform.position - _click.origin;
+                Distance();
             }
 
             if (_clickHit.transform.tag == "Gorilla")
             {
                 _animalSelected = _clickHit.transform.gameObject;
-
-                offset = _animalSelected.transform.position - _click.origin;
+                Distance();
             }
 
             if (_clickHit.transform.tag == "Puma")
             {
                 _animalSelected = _clickHit.transform.gameObject;
-
-                offset = _animalSelected.transform.position - _click.origin;
+                Distance();
             }
         }
+    }
+
+    void Distance()
+    {
+        var camPoint = Camera.main.transform.position;
+        var animalPoint = _animalSelected.transform.position;
+
+        _distance = Vector3.Distance(camPoint, animalPoint);
+        var clickPosition = _click.GetPoint(_distance);
+
+        _offset = clickPosition - animalPoint;
+    }
+
+    void DragAnimal()
+    {
+        _click = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var clickPosition = _click.GetPoint(_distance);
+        var newPosition = clickPosition - _offset;
+
+        _animalSelected.transform.position = newPosition;
     }
 
     void PlaceAnimal()
@@ -128,7 +144,7 @@ public class Planes : MonoBehaviour {
             {
                 click.PlayOneShot(click_note);
                 _prevObject.GetComponent<SpriteRenderer>().sprite = _giraffe;
-                _prevSprite = _gorilla;
+                _prevSprite = _giraffe;
             }
 
             if (_animalSelected.tag.Equals("Gorilla"))
@@ -146,6 +162,8 @@ public class Planes : MonoBehaviour {
             }
 
             _animalSelected = null;
+            _distance = 0.0f;
+            _offset = new Vector3(0.0f,0.0f,0.0f);
         }
     }
 
