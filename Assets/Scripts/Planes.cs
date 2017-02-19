@@ -15,8 +15,9 @@ public class Planes : MonoBehaviour {
     public Sprite _room;
 
     private GameObject _animalSelected = null;
-    private float _distance;
+    private Vector3 _originalPosition;
     private Vector3 _offset;
+    private float _distance;
 
     // Information for the previously clicked object
     GameObject _prevObject;
@@ -61,18 +62,21 @@ public class Planes : MonoBehaviour {
             if (_clickHit.transform.tag == "Giraffe")
             {
                 _animalSelected = _clickHit.transform.gameObject;
+                _originalPosition = _animalSelected.transform.localPosition;
                 Distance();
             }
 
             if (_clickHit.transform.tag == "Gorilla")
             {
                 _animalSelected = _clickHit.transform.gameObject;
+                _originalPosition = _animalSelected.transform.localPosition;
                 Distance();
             }
 
             if (_clickHit.transform.tag == "Puma")
             {
                 _animalSelected = _clickHit.transform.gameObject;
+                _originalPosition = _animalSelected.transform.localPosition;
                 Distance();
             }
         }
@@ -95,6 +99,14 @@ public class Planes : MonoBehaviour {
         var clickPosition = _click.GetPoint(_distance);
         var newPosition = clickPosition - _offset;
 
+        int layerMask = (1 << 8);
+        // See if ray from camera to user click hits something
+        if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
+        {
+            Debug.Log("holding on");
+            newPosition = _clickHit.transform.position - _offset;
+        }
+
         _animalSelected.transform.position = newPosition;
     }
 
@@ -106,7 +118,12 @@ public class Planes : MonoBehaviour {
         // See if ray from camera to user click hits something
         if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
         {
+            _animalSelected.transform.position = _originalPosition;
             PlaySelectedAnimation();
+        }
+        else
+        {
+            _animalSelected.transform.position = _originalPosition;
         }
     }
 
