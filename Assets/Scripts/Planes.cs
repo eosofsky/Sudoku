@@ -15,6 +15,9 @@ public class Planes : MonoBehaviour {
     public Sprite _room;
 
     private GameObject _animalSelected = null;
+    private Vector3 _originalPosition;
+    private Vector3 _offset;
+    private float _distance;
 
     // Information for the previously clicked object
     GameObject _prevObject;
@@ -31,50 +34,96 @@ public class Planes : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        Vector3 offset = new Vector3(0.0f, 0.0f, 0.0f);
-
         if (Input.GetButtonDown("Fire1"))
         {
-            _click = Camera.main.ScreenPointToRay(Input.mousePosition);
+            GrabAnimal();
+        }
 
-            int layerMask = (1 << 9);
-            if (Physics.Raycast(_click, out _clickHit, 500, layerMask))
-            {
-                Debug.Log("Hit!");
-                if (_clickHit.transform.tag == "Giraffe")
-                {
-                    _animalSelected = _clickHit.transform.gameObject;
-
-                    offset = _animalSelected.transform.position - _click.origin;
-                }
-
-                if (_clickHit.transform.tag == "Gorilla")
-                {
-                    _animalSelected = _clickHit.transform.gameObject;
-
-                    offset = _animalSelected.transform.position - _click.origin;
-                }
-
-                if (_clickHit.transform.tag == "Puma")
-                {
-                    _animalSelected = _clickHit.transform.gameObject;
-
-                    offset = _animalSelected.transform.position - _click.origin;
-                }
-            }
+        if (Input.GetButton("Fire1") && _animalSelected != null)
+        {
+            DragAnimal();
         }
 
         // trigger when the user clicks the mouse
         if (Input.GetButtonUp("Fire1") && _animalSelected != null)
         {
-            _click = Camera.main.ScreenPointToRay(Input.mousePosition);
+            PlaceAnimal();
+        }
+    }
 
-            int layerMask = (1 << 8);
-            // See if ray from camera to user click hits something
-            if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
+    void GrabAnimal()
+    {
+        _click = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        int layerMask = (1 << 9);
+        if (Physics.Raycast(_click, out _clickHit, 500, layerMask))
+        {
+            Debug.Log("Hit!");
+            if (_clickHit.transform.tag == "Giraffe")
             {
-                PlaySelectedAnimation();
+                _animalSelected = _clickHit.transform.gameObject;
+                _originalPosition = _animalSelected.transform.localPosition;
+                Distance();
             }
+
+            if (_clickHit.transform.tag == "Gorilla")
+            {
+                _animalSelected = _clickHit.transform.gameObject;
+                _originalPosition = _animalSelected.transform.localPosition;
+                Distance();
+            }
+
+            if (_clickHit.transform.tag == "Puma")
+            {
+                _animalSelected = _clickHit.transform.gameObject;
+                _originalPosition = _animalSelected.transform.localPosition;
+                Distance();
+            }
+        }
+    }
+
+    void Distance()
+    {
+        var camPoint = Camera.main.transform.position;
+        var animalPoint = _animalSelected.transform.position;
+
+        _distance = Vector3.Distance(camPoint, animalPoint);
+        var clickPosition = _click.GetPoint(_distance);
+
+        _offset = clickPosition - animalPoint;
+    }
+
+    void DragAnimal()
+    {
+        _click = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var clickPosition = _click.GetPoint(_distance);
+        var newPosition = clickPosition - _offset;
+
+        int layerMask = (1 << 8);
+        // See if ray from camera to user click hits something
+        if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
+        {
+            Debug.Log("holding on");
+            newPosition = _clickHit.transform.position - _offset;
+        }
+
+        _animalSelected.transform.position = newPosition;
+    }
+
+    void PlaceAnimal()
+    {
+        _click = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        int layerMask = (1 << 8);
+        // See if ray from camera to user click hits something
+        if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
+        {
+            _animalSelected.transform.position = _originalPosition;
+            PlaySelectedAnimation();
+        }
+        else
+        {
+            _animalSelected.transform.position = _originalPosition;
         }
     }
 
@@ -106,14 +155,13 @@ public class Planes : MonoBehaviour {
             _prevSprite = _prevObject.GetComponent<SpriteRenderer>().sprite;
         }
 
-        Debug.LogFormat("Animal selected : {0}", _animalSelected);
         if (_animalSelected != null)
         {
             if (_animalSelected.tag.Equals("Giraffe"))
             {
                 click.PlayOneShot(click_note);
                 _prevObject.GetComponent<SpriteRenderer>().sprite = _giraffe;
-                _prevSprite = _gorilla;
+                _prevSprite = _giraffe;
             }
 
             if (_animalSelected.tag.Equals("Gorilla"))
@@ -131,6 +179,8 @@ public class Planes : MonoBehaviour {
             }
 
             _animalSelected = null;
+            _distance = 0.0f;
+            _offset = new Vector3(0.0f,0.0f,0.0f);
         }
     }
 
