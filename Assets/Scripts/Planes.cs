@@ -62,21 +62,21 @@ public class Planes : MonoBehaviour {
             if (_clickHit.transform.tag == "Giraffe")
             {
                 _animalSelected = _clickHit.transform.gameObject;
-                _originalPosition = _animalSelected.transform.localPosition;
+                _originalPosition = _animalSelected.transform.position;
                 Distance();
             }
 
             if (_clickHit.transform.tag == "Gorilla")
             {
                 _animalSelected = _clickHit.transform.gameObject;
-                _originalPosition = _animalSelected.transform.localPosition;
+                _originalPosition = _animalSelected.transform.position;
                 Distance();
             }
 
             if (_clickHit.transform.tag == "Puma")
             {
                 _animalSelected = _clickHit.transform.gameObject;
-                _originalPosition = _animalSelected.transform.localPosition;
+                _originalPosition = _animalSelected.transform.position;
                 Distance();
             }
         }
