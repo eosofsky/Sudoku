@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour {
 
 	private Text counterText;
-	private int score;
+	public static int score;
 
 	void Start () {
 		counterText = GetComponentInChildren <Text> ();
