@@ -67,7 +67,7 @@ public class LevelManager : MonoBehaviour
             if (_ebb > (easeUp.y + _lossHeight))
             {
                 // we lose
-                Application.LoadLevel("Scene1");
+                Application.LoadLevel("End");
             }
         }
 
