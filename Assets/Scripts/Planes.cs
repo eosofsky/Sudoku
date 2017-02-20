@@ -17,6 +17,7 @@ public class Planes : MonoBehaviour {
     private GameObject _animalSelected = null;
     private Vector3 _originalPosition;
     private Vector3 _offset;
+    private Quaternion _originalRotation;
     private float _distance;
 
     // Information for the previously clicked object
@@ -63,6 +64,7 @@ public class Planes : MonoBehaviour {
             {
                 _animalSelected = _clickHit.transform.gameObject;
                 _originalPosition = _animalSelected.transform.position;
+                _originalRotation = _animalSelected.transform.rotation;
                 Distance();
             }
 
@@ -70,6 +72,7 @@ public class Planes : MonoBehaviour {
             {
                 _animalSelected = _clickHit.transform.gameObject;
                 _originalPosition = _animalSelected.transform.position;
+                _originalRotation = _animalSelected.transform.rotation;
                 Distance();
             }
 
@@ -77,6 +80,7 @@ public class Planes : MonoBehaviour {
             {
                 _animalSelected = _clickHit.transform.gameObject;
                 _originalPosition = _animalSelected.transform.position;
+                _originalRotation = _animalSelected.transform.rotation;
                 Distance();
             }
         }
@@ -103,8 +107,16 @@ public class Planes : MonoBehaviour {
         // See if ray from camera to user click hits something
         if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
         {
-            Debug.Log("holding on");
             newPosition = _clickHit.transform.position - _offset;
+            if (_animalSelected.tag.Equals("Giraffe") || _animalSelected.tag.Equals("Puma"))
+            {
+                var newRotation = new Quaternion(
+                    _originalRotation.x,
+                    _originalRotation.y,
+                    _originalRotation.z,
+                    _originalRotation.w);
+                _animalSelected.transform.rotation = newRotation;
+            }
         }
 
         _animalSelected.transform.position = newPosition;
@@ -119,11 +131,13 @@ public class Planes : MonoBehaviour {
         if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
         {
             _animalSelected.transform.position = _originalPosition;
+            _animalSelected.transform.rotation = _originalRotation;
             PlaySelectedAnimation();
         }
         else
         {
             _animalSelected.transform.position = _originalPosition;
+            _animalSelected.transform.rotation = _originalRotation;
         }
     }
 
