@@ -8,6 +8,7 @@ public class Planes : MonoBehaviour {
     Ray _click;
     RaycastHit _clickHit;
 
+    public GameObject _wave;
     // Animal Clipping spaces
     public GameObject _giraffeTrans;
     public GameObject _gorillaTrans;
@@ -39,6 +40,11 @@ public class Planes : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        if (_giraffeTrans && _gorillaTrans && _pumaTrans)
+        {
+            ChangeTrans();
+        }
+
         if (Input.GetButtonDown("Fire1"))
         {
             GrabAnimal();
@@ -48,7 +54,10 @@ public class Planes : MonoBehaviour {
         {
             DragAnimal();
         }
+    }
 
+    private void LateUpdate()
+    {
         // trigger when the user clicks the mouse
         if (Input.GetButtonUp("Fire1") && _animalSelected != null)
         {
@@ -90,31 +99,27 @@ public class Planes : MonoBehaviour {
         // See if ray from camera to user click hits something
         if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
         {
-            var axis = new Vector3(0.0f, 1.0f, 0.0f);
-            if ((_animalSelected.tag.Equals("Giraffe") || _animalSelected.tag.Equals("Puma"))
-                && !_rotatedOnce)
+            var rotation_offset = new Vector3(0.0f, 0.3f, 0.75f);
+            if (_animalSelected.tag.Equals("Gorilla"))
             {
-                var rotation_offset = new Vector3(2.5f, 0.0f, 0.0f);
-                var y_rotation = _clickHit.transform.rotation.y;
-                Debug.LogFormat("Location {0}", _clickHit.transform.position);
-                newPosition = _clickHit.transform.position;
-                
-                _animalSelected.transform.RotateAround(_animalSelected.transform.position, axis, 65.0f);
-                _animalSelected.transform.position = newPosition - rotation_offset;
-                Debug.LogFormat("animal location {0}", _animalSelected.transform.position);
-                _rotatedOnce = true;
+                rotation_offset = new Vector3(-0.3f, 0.3f, 0.75f);
             }
-            else if (_animalSelected.tag.Equals("Gorilla") && !_rotatedOnce)
+            else if (_animalSelected.tag.Equals("Puma"))
             {
-                newPosition = _clickHit.transform.position - _offset;
+                rotation_offset = new Vector3(0.25f, 0.3f, 0.80f);
+            }
 
+            if ((_animalSelected.tag.Equals("Giraffe") || _animalSelected.tag.Equals("Puma") ||
+                _animalSelected.tag.Equals("Gorilla")) && !_rotatedOnce)
+            {
+                newPosition = _clickHit.transform.position - rotation_offset;
                 _animalSelected.transform.position = newPosition;
-                _animalSelected.transform.RotateAround(newPosition, axis, 65.0f);
+                _animalSelected.transform.Rotate(0.0f, 0.0f, 65.0f);
                 _rotatedOnce = true;
             }
             else
             {
-                newPosition = _clickHit.transform.position - _offset;
+                newPosition = _clickHit.transform.position - rotation_offset;
                 _animalSelected.transform.position = newPosition;
             }
         }
@@ -126,18 +131,14 @@ public class Planes : MonoBehaviour {
 
     void PlaceAnimal()
     {
+        RestorePosition();
         _click = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         int layerMask = (1 << 8);
         // See if ray from camera to user click hits something
         if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
         {
-            //RestorePosition();
             PlaySelectedAnimation();
-        }
-        else
-        {
-            RestorePosition();
         }
     }
 
@@ -218,6 +219,25 @@ public class Planes : MonoBehaviour {
             _distance = 0.0f;
             _offset = new Vector3(0.0f,0.0f,0.0f);
         }
+    }
+
+    // Updates each trans to the correct y position
+    public void ChangeTrans()
+    {
+        var y = _wave.transform.position.y;
+
+        _giraffeTrans.transform.position = new Vector3(
+            _giraffeTrans.transform.position.x,
+            y,
+            _giraffeTrans.transform.position.z);
+        _gorillaTrans.transform.position = new Vector3(
+            _gorillaTrans.transform.position.x,
+            y,
+            _gorillaTrans.transform.position.z);
+        _pumaTrans.transform.position = new Vector3(
+            _pumaTrans.transform.position.x,
+            y,
+            _pumaTrans.transform.position.z);
     }
 
     /*
