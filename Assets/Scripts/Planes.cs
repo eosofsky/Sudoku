@@ -8,16 +8,20 @@ public class Planes : MonoBehaviour {
     Ray _click;
     RaycastHit _clickHit;
 
-    // Base Materials (will be replaced by Sprites)
+    // Animal Clipping spaces
+    public GameObject _giraffeTrans;
+    public GameObject _gorillaTrans;
+    public GameObject _pumaTrans;
+    // Room Sprites (input by user)
     public Sprite _giraffe;
     public Sprite _gorilla;
     public Sprite _puma;
     public Sprite _room;
 
     private GameObject _animalSelected = null;
-    private Vector3 _originalPosition;
     private Vector3 _offset;
     private Quaternion _originalRotation;
+    private bool _rotatedOnce;
     private float _distance;
 
     // Information for the previously clicked object
@@ -59,30 +63,9 @@ public class Planes : MonoBehaviour {
         int layerMask = (1 << 9);
         if (Physics.Raycast(_click, out _clickHit, 500, layerMask))
         {
-            Debug.Log("Hit!");
-            if (_clickHit.transform.tag == "Giraffe")
-            {
-                _animalSelected = _clickHit.transform.gameObject;
-                _originalPosition = _animalSelected.transform.position;
-                _originalRotation = _animalSelected.transform.rotation;
-                Distance();
-            }
-
-            if (_clickHit.transform.tag == "Gorilla")
-            {
-                _animalSelected = _clickHit.transform.gameObject;
-                _originalPosition = _animalSelected.transform.position;
-                _originalRotation = _animalSelected.transform.rotation;
-                Distance();
-            }
-
-            if (_clickHit.transform.tag == "Puma")
-            {
-                _animalSelected = _clickHit.transform.gameObject;
-                _originalPosition = _animalSelected.transform.position;
-                _originalRotation = _animalSelected.transform.rotation;
-                Distance();
-            }
+            _animalSelected = _clickHit.transform.gameObject;
+            _originalRotation = _animalSelected.transform.rotation;
+            Distance();
         }
     }
 
@@ -107,19 +90,38 @@ public class Planes : MonoBehaviour {
         // See if ray from camera to user click hits something
         if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
         {
-            newPosition = _clickHit.transform.position - _offset;
-            if (_animalSelected.tag.Equals("Giraffe") || _animalSelected.tag.Equals("Puma"))
+            var axis = new Vector3(0.0f, 1.0f, 0.0f);
+            if ((_animalSelected.tag.Equals("Giraffe") || _animalSelected.tag.Equals("Puma"))
+                && !_rotatedOnce)
             {
-                var newRotation = new Quaternion(
-                    _originalRotation.x,
-                    _originalRotation.y,
-                    _originalRotation.z,
-                    _originalRotation.w);
-                _animalSelected.transform.rotation = newRotation;
+                var rotation_offset = new Vector3(2.5f, 0.0f, 0.0f);
+                var y_rotation = _clickHit.transform.rotation.y;
+                Debug.LogFormat("Location {0}", _clickHit.transform.position);
+                newPosition = _clickHit.transform.position;
+                
+                _animalSelected.transform.RotateAround(_animalSelected.transform.position, axis, 65.0f);
+                _animalSelected.transform.position = newPosition - rotation_offset;
+                Debug.LogFormat("animal location {0}", _animalSelected.transform.position);
+                _rotatedOnce = true;
+            }
+            else if (_animalSelected.tag.Equals("Gorilla") && !_rotatedOnce)
+            {
+                newPosition = _clickHit.transform.position - _offset;
+
+                _animalSelected.transform.position = newPosition;
+                _animalSelected.transform.RotateAround(newPosition, axis, 65.0f);
+                _rotatedOnce = true;
+            }
+            else
+            {
+                newPosition = _clickHit.transform.position - _offset;
+                _animalSelected.transform.position = newPosition;
             }
         }
-
-        _animalSelected.transform.position = newPosition;
+        else
+        {
+            _animalSelected.transform.position = newPosition;
+        }
     }
 
     void PlaceAnimal()
@@ -130,14 +132,34 @@ public class Planes : MonoBehaviour {
         // See if ray from camera to user click hits something
         if (Physics.Raycast(_click, out _clickHit, 5, layerMask))
         {
-            _animalSelected.transform.position = _originalPosition;
-            _animalSelected.transform.rotation = _originalRotation;
+            //RestorePosition();
             PlaySelectedAnimation();
         }
         else
         {
-            _animalSelected.transform.position = _originalPosition;
+            RestorePosition();
+        }
+    }
+
+    void RestorePosition()
+    {
+        if (_animalSelected.tag.Equals("Giraffe"))
+        {
+            _animalSelected.transform.position = _giraffeTrans.transform.position;
             _animalSelected.transform.rotation = _originalRotation;
+            _rotatedOnce = false;
+        }
+        else if (_animalSelected.tag.Equals("Gorilla"))
+        {
+            _animalSelected.transform.position = _gorillaTrans.transform.position;
+            _animalSelected.transform.rotation = _originalRotation;
+            _rotatedOnce = false;
+        }
+        else if (_animalSelected.tag.Equals("Puma"))
+        {
+            _animalSelected.transform.position = _pumaTrans.transform.position;
+            _animalSelected.transform.rotation = _originalRotation;
+            _rotatedOnce = false;
         }
     }
 
