@@ -21,16 +21,34 @@ public class Cube : MonoBehaviour {
 
 	void Update () {
 		if (Input.GetKeyDown ("z")) {
+			if (CursorManager.instance) {
+				CursorManager.instance.SwipeLeft ();
+			}
 			rotateRow (0f, true);
 		} else if (Input.GetKeyDown ("x")) {
+			if (CursorManager.instance) {
+				CursorManager.instance.SwipeRight ();
+			}
 			rotateRow (0f, false);
 		} else if (Input.GetKeyDown ("a")) {
+			if (CursorManager.instance) {
+				CursorManager.instance.SwipeLeft ();
+			}
 			rotateRow (1.1f, true);
 		} else if (Input.GetKeyDown ("s")) {
+			if (CursorManager.instance) {
+				CursorManager.instance.SwipeRight ();
+			}
 			rotateRow (1.1f, false);
 		} else if (Input.GetKeyDown ("q")) {
+			if (CursorManager.instance) {
+				CursorManager.instance.SwipeLeft ();
+			}
 			rotateRow (2.2f, true);
 		} else if (Input.GetKeyDown ("w")) {
+			if (CursorManager.instance) {
+				CursorManager.instance.SwipeRight ();
+			}
 			rotateRow (2.2f, false);
 		} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
 			RotateCube(false);
