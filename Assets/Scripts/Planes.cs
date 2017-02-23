@@ -9,10 +9,6 @@ public class Planes : MonoBehaviour {
     RaycastHit _clickHit;
 
     public GameObject _wave;
-    // Animal Clipping spaces
-    public GameObject _giraffeTrans;
-    public GameObject _gorillaTrans;
-    public GameObject _pumaTrans;
     // Room Sprites (input by user)
     public Sprite _giraffe;
     public Sprite _gorilla;
@@ -20,6 +16,7 @@ public class Planes : MonoBehaviour {
     public Sprite _room;
 
     private GameObject _animalSelected = null;
+    private GameObject _newAnimal;
     private Vector3 _offset;
     private Quaternion _originalRotation;
     private bool _rotatedOnce;
@@ -40,11 +37,6 @@ public class Planes : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (_giraffeTrans && _gorillaTrans && _pumaTrans)
-        {
-            ChangeTrans();
-        }
-
         if (Input.GetButtonDown("Fire1"))
         {
             GrabAnimal();
@@ -81,6 +73,22 @@ public class Planes : MonoBehaviour {
 			}
             _originalRotation = _animalSelected.transform.rotation;
             Distance();
+
+            var t = _wave.transform;
+            _newAnimal = Instantiate(_animalSelected, _animalSelected.transform.position,
+                _animalSelected.transform.rotation) as GameObject;
+            _newAnimal.transform.parent = LevelManager.currentWave.transform;
+
+            var x = 3.0f;
+            var y = 3.0f;
+            var z = 3.0f;
+            if (_newAnimal.tag.Equals("Giraffe"))
+            {
+                y = 2.57f;
+                z = 4.71f;
+            }
+            _newAnimal.transform.localScale = new Vector3(x, y, z);
+            _newAnimal.SetActive(false);
         }
     }
 
@@ -146,28 +154,13 @@ public class Planes : MonoBehaviour {
         {
             PlaySelectedAnimation();
         }
+        _newAnimal.SetActive(true);
     }
 
     void RestorePosition()
     {
-        if (_animalSelected.tag.Equals("Giraffe"))
-        {
-            _animalSelected.transform.position = _giraffeTrans.transform.position;
-            _animalSelected.transform.rotation = _originalRotation;
-            _rotatedOnce = false;
-        }
-        else if (_animalSelected.tag.Equals("Gorilla"))
-        {
-            _animalSelected.transform.position = _gorillaTrans.transform.position;
-            _animalSelected.transform.rotation = _originalRotation;
-            _rotatedOnce = false;
-        }
-        else if (_animalSelected.tag.Equals("Puma"))
-        {
-            _animalSelected.transform.position = _pumaTrans.transform.position;
-            _animalSelected.transform.rotation = _originalRotation;
-            _rotatedOnce = false;
-        }
+        _animalSelected.SetActive(false);
+        _rotatedOnce = false;
     }
 
 	public void ResetPrevObject () {
@@ -225,25 +218,6 @@ public class Planes : MonoBehaviour {
             _distance = 0.0f;
             _offset = new Vector3(0.0f,0.0f,0.0f);
         }
-    }
-
-    // Updates each trans to the correct y position
-    public void ChangeTrans()
-    {
-        var y = _wave.transform.position.y;
-
-        _giraffeTrans.transform.position = new Vector3(
-            _giraffeTrans.transform.position.x,
-            y,
-            _giraffeTrans.transform.position.z);
-        _gorillaTrans.transform.position = new Vector3(
-            _gorillaTrans.transform.position.x,
-            y,
-            _gorillaTrans.transform.position.z);
-        _pumaTrans.transform.position = new Vector3(
-            _pumaTrans.transform.position.x,
-            y,
-            _pumaTrans.transform.position.z);
     }
 
     /*
