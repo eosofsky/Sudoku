@@ -62,12 +62,14 @@ public class Planes : MonoBehaviour {
     private void LateUpdate()
     {
         // trigger when the user clicks the mouse
-        if (Input.GetButtonUp("Fire1") && _animalSelected != null)
+		if (Input.GetButtonUp("Fire1"))
         {
 			if (CursorManager.instance) {
 				CursorManager.instance.LetGo ();
 			}
-            PlaceAnimal();
+			if (_animalSelected != null) {
+				PlaceAnimal ();
+			}
         }
     }
 

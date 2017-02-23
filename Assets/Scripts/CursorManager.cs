@@ -12,7 +12,7 @@ public class CursorManager : MonoBehaviour {
 
 	public CursorMode cursorMode = CursorMode.Auto;
 	public Vector2 idleHotSpot = new Vector2 (0, 0);
-	public Vector2 gamePlayHotSpot = new Vector2 (50, 50);
+	public Vector2 gamePlayHotSpot = new Vector2 (100, 100);
 	public float speed = 0.1f;
 
 	public static CursorManager instance;
