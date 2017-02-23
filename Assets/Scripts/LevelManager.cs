@@ -35,6 +35,8 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         _haveWon = false;
+        _timesRaised = 0;
+        _timesWon = 0;
         _timePassed = 0.0f;
         _lossHeight = 1.70f;
 
@@ -49,9 +51,9 @@ public class LevelManager : MonoBehaviour
         _timePassed += Time.deltaTime;
         if (_haveWon && _timesRaised < _timesWon)
         {
-            if (wave.transform.position.y < easeUp.y)
+            if (currentWave.transform.position.y < easeUp.y)
             {
-                RaiseWave(0.05f);
+                RaiseWave(0.03f);
             }
             else
             {
@@ -131,11 +133,11 @@ public class LevelManager : MonoBehaviour
     void RaiseWave (float distance)
     {
         var newPosition = new Vector3(
-            wave.transform.position.x,
-            wave.transform.position.y + distance,
-            wave.transform.position.z);
+            currentWave.transform.position.x,
+            currentWave.transform.position.y + distance,
+            currentWave.transform.position.z);
 
-        wave.transform.position = newPosition;
+        currentWave.transform.position = newPosition;
         _ebb += distance;
     }
 }
