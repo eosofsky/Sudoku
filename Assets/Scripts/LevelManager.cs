@@ -45,7 +45,7 @@ public class LevelManager : MonoBehaviour
         {
             if (wave.transform.position.y < easeUp.y)
             {
-                RaiseWave(0.02f);
+                RaiseWave(0.05f);
             }
             else
             {

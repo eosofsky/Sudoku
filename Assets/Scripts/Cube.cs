@@ -32,6 +32,10 @@ public class Cube : MonoBehaviour {
 			rotateRow (2.2f, true);
 		} else if (Input.GetKeyDown ("w")) {
 			rotateRow (2.2f, false);
+		} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			RotateCube(false);
+		} else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			RotateCube(true);
 		}
 	}
 
@@ -61,6 +65,17 @@ public class Cube : MonoBehaviour {
 				rotateRow (2.2f, rot_left);
 			}
 		}
+	}
+
+	private void RotateCube(bool left) {
+		if (left && CursorManager.instance) {
+			CursorManager.instance.SwipeLeft ();
+		} else if (CursorManager.instance) {
+			CursorManager.instance.SwipeRight ();
+		}
+		rotateRow (0.0f, left);
+		rotateRow (1.1f, left);
+		rotateRow (2.2f, left);
 	}
 
 	void rotateRow (float y, bool left) {
