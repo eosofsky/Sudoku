@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Button : MonoBehaviour {
+public class ClearButton : MonoBehaviour {
 
 	public void MousedOver () {
 		if (CursorManager.instance) {
-			CursorManager.instance.OverButton ();
+			CursorManager.instance.OverButtonInGame ();
 		}
 	}
 
 	public void MousedOff () {
 		if (CursorManager.instance) {
-			CursorManager.instance.OffButton ();
+			CursorManager.instance.OffButtonInGame ();
 		}
 	}
 
 	public void ClickButton () {
 		if (CursorManager.instance) {
-			CursorManager.instance.ClickButton ();
+			CursorManager.instance.ClickButtonInGame ();
 		}
 		LevelManager.instance.ClearCurrentCube ();
 	}

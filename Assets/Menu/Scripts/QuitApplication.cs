@@ -5,6 +5,10 @@ public class QuitApplication : MonoBehaviour {
 
 	public void Quit()
 	{
+		if (CursorManager.instance) {
+			CursorManager.instance.ClickButtonInMenu ();
+		}
+
 		//If we are running in a standalone build of the game
 	#if UNITY_STANDALONE
 		//Quit the application
