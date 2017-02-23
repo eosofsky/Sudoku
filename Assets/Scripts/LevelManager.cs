@@ -15,6 +15,7 @@ public class LevelManager : MonoBehaviour
 	private GameObject oldCube = null;
 	private ScoreManager scoreManager;
 	private CameraManager cameraManager;
+    public static GameObject currentWave;
 
     private Vector3 easeUp;
     private float _timePassed; // total time passed
@@ -124,7 +125,7 @@ public class LevelManager : MonoBehaviour
             spawnPoint.position.x,
             spawnPoint.position.y - 0.7f,
             spawnPoint.position.z);
-        wave = Instantiate(wave, wavePosition, spawnPoint.rotation);
+        currentWave = Instantiate(wave, wavePosition, spawnPoint.rotation);
     }
 
     void RaiseWave (float distance)
