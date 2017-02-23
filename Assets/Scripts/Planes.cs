@@ -47,9 +47,6 @@ public class Planes : MonoBehaviour {
 
         if (Input.GetButtonDown("Fire1"))
         {
-			if (CursorManager.instance) {
-				CursorManager.instance.Grab ();
-			}
             GrabAnimal();
         }
 
@@ -62,14 +59,12 @@ public class Planes : MonoBehaviour {
     private void LateUpdate()
     {
         // trigger when the user clicks the mouse
-		if (Input.GetButtonUp("Fire1"))
+		if (Input.GetButtonUp("Fire1") && _animalSelected != null)
         {
 			if (CursorManager.instance) {
 				CursorManager.instance.LetGo ();
 			}
-			if (_animalSelected != null) {
-				PlaceAnimal ();
-			}
+			PlaceAnimal ();
         }
     }
 
@@ -81,6 +76,9 @@ public class Planes : MonoBehaviour {
         if (Physics.Raycast(_click, out _clickHit, 500, layerMask))
         {
             _animalSelected = _clickHit.transform.gameObject;
+			if (_animalSelected && CursorManager.instance) {
+					CursorManager.instance.Grab ();
+			}
             _originalRotation = _animalSelected.transform.rotation;
             Distance();
         }
