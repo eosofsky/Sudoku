@@ -10,13 +10,14 @@ public class CursorManager : MonoBehaviour {
 	public Texture2D[] swipeLeft;
 	public Texture2D[] swipeRight;
 	public Texture2D[] overButton;
-	public Texture2D[] offButton;
+	public Texture2D[] offButtonInGame;
+	public Texture2D[] offButtonInMenu;
 	public Texture2D[] click;
 
 	public CursorMode cursorMode = CursorMode.Auto;
 	public Vector2 idleHotSpot = new Vector2 (0, 0);
 	public Vector2 gamePlayHotSpot = new Vector2 (100, 100);
-	public float speed = 0.1f;
+	public float delay = 0.05f;
 
 	public static CursorManager instance;
 
@@ -50,22 +51,34 @@ public class CursorManager : MonoBehaviour {
 		StartCoroutine (AnimateCursor(swipeRight, gamePlayHotSpot));
 	}
 
-	public void OverButton () {
+	public void OverButtonInGame () {
 		StartCoroutine (AnimateCursor(overButton, gamePlayHotSpot));
 	}
 
-	public void OffButton () {
-		StartCoroutine (AnimateCursor(offButton, gamePlayHotSpot));
+	public void OverButtonInMenu () {
+		StartCoroutine (AnimateCursor(overButton, idleHotSpot));
 	}
 
-	public void ClickButton () {
+	public void OffButtonInGame () {
+		StartCoroutine (AnimateCursor(offButtonInGame, gamePlayHotSpot));
+	}
+
+	public void OffButtonInMenu () {
+		StartCoroutine (AnimateCursor(offButtonInMenu, idleHotSpot));
+	}
+
+	public void ClickButtonInGame () {
 		StartCoroutine (AnimateCursor(click, gamePlayHotSpot));
+	}
+
+	public void ClickButtonInMenu () {
+		StartCoroutine (AnimateCursor(click, idleHotSpot));
 	}
 
 	IEnumerator AnimateCursor (Texture2D[] animation, Vector2 hotSpot) {
 		for (int i = 0; i < animation.Length; i++) {
 			Cursor.SetCursor (animation [i], hotSpot, cursorMode);
-			yield return new WaitForSeconds (speed);
+			yield return new WaitForSeconds (delay);
 		}
 	}
 

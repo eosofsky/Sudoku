@@ -12,6 +12,10 @@ public class ShowPanels : MonoBehaviour {
 	//Call this function to activate and display the Options panel during the main menu
 	public void ShowOptionsPanel()
 	{
+		if (CursorManager.instance) {
+			CursorManager.instance.ClickButtonInMenu ();
+		}
+
 		optionsPanel.SetActive(true);
 		optionsTint.SetActive(true);
 	}
@@ -19,6 +23,10 @@ public class ShowPanels : MonoBehaviour {
 	//Call this function to deactivate and hide the Options panel during the main menu
 	public void HideOptionsPanel()
 	{
+		if (CursorManager.instance) {
+			CursorManager.instance.ClickButtonInMenu ();
+		}
+
 		optionsPanel.SetActive(false);
 		optionsTint.SetActive(false);
 	}
