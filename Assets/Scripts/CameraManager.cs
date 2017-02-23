@@ -16,14 +16,6 @@ public class CameraManager : MonoBehaviour {
 		movingCamera = false;
 	}
 
-	void Update () {
-		if (Input.GetKeyDown (KeyCode.RightArrow)) {
-			StartCoroutine (rotateCamera (false));
-		} else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-			StartCoroutine (rotateCamera (true));
-		}
-	}
-
 	public void UpdateCamera () {
 		endPos.y += 3.3f;
 		movingCamera = true;
@@ -32,25 +24,11 @@ public class CameraManager : MonoBehaviour {
 	void FixedUpdate () {
 		if (movingCamera) {
 			Vector3 nextPos = camera.transform.position;
-			nextPos.y += 0.1f;
+			nextPos.y += 0.05f;
 			camera.transform.position = nextPos;//Vector3.Lerp (camera.transform.position, endPos, 10f * Time.deltaTime);
 			if (endPos.y - camera.transform.position.y <= 0.1f) {
 				movingCamera = false;
 			}
 		}
 	}
-
-	IEnumerator	rotateCamera (bool left) {
-		int amount = 10;
-		Vector3 dir = left ? Vector3.up : -Vector3.up;
-		for (int i = 0; i < 90 / amount; i++) {
-			camera.transform.RotateAround (Vector3.zero, dir, amount);
-			light.transform.RotateAround (Vector3.zero, dir, amount);
-			GameObject wave = GameObject.FindGameObjectWithTag ("Wave");
-			wave.transform.RotateAround (Vector3.zero, dir, amount);
-			yield return new WaitForSeconds (0.05f);
-		}
-		yield return null;
-	}
-
 }
