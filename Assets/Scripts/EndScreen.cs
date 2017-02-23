@@ -13,9 +13,7 @@ public class EndScreen : MonoBehaviour {
 	void Awake () {
 		Text text = GetComponentInChildren<Text> ();
 		text.text = "Apartments Filled: " + ScoreManager.score;
-		if (CursorManager.instance) {
-			CursorManager.instance.SetIdle ();
-		}
+		CursorManager.instance.SetIdle ();
 	}
 
 	public void LoadDelayedRestart()
