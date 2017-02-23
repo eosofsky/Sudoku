@@ -10,9 +10,10 @@ public class EndScreen : MonoBehaviour {
 
 	//[HideInInspector] public Animator animColorFade;
 
-	void Start () {
+	void Awake () {
 		Text text = GetComponentInChildren<Text> ();
 		text.text = "Apartments Filled: " + ScoreManager.score;
+		CursorManager.instance.SetIdle ();
 	}
 
 	public void LoadDelayedRestart()
