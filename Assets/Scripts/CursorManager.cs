@@ -17,7 +17,7 @@ public class CursorManager : MonoBehaviour {
 	public CursorMode cursorMode = CursorMode.Auto;
 	public Vector2 idleHotSpot = new Vector2 (0, 0);
 	public Vector2 gamePlayHotSpot = new Vector2 (100, 100);
-	public float speed = 0.1f;
+	public float delay = 0.05f;
 
 	public static CursorManager instance;
 
@@ -78,7 +78,7 @@ public class CursorManager : MonoBehaviour {
 	IEnumerator AnimateCursor (Texture2D[] animation, Vector2 hotSpot) {
 		for (int i = 0; i < animation.Length; i++) {
 			Cursor.SetCursor (animation [i], hotSpot, cursorMode);
-			yield return new WaitForSeconds (speed);
+			yield return new WaitForSeconds (delay);
 		}
 	}
 
