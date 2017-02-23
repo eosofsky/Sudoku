@@ -8,7 +8,9 @@ public class LevelManager : MonoBehaviour
     public GameObject cube;
     public GameObject wave;
     public Transform spawnPoint;
-    
+
+	public static LevelManager instance;
+
     private Cube currentCubeScript = null;
 	private GameObject oldCube = null;
 	private ScoreManager scoreManager;
@@ -25,6 +27,10 @@ public class LevelManager : MonoBehaviour
     private float _deltaDistance;
 
     private float _lossHeight; // How high wave raises into cube to cause user loss
+
+	void Awake () {
+		instance = this;
+	}
 
     void Start()
     {
