@@ -14,6 +14,12 @@ public class LevelGenerator : MonoBehaviour {
 	//	}
 	//}
 
+	void Awake () {
+		if (CursorManager.instance) {
+			CursorManager.instance.SetOpen ();
+		}
+	}
+
 	public int[] GetLevel () {
 		int[] level = GetCompleteFace ();
 		RemoveSome (level);

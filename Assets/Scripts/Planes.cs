@@ -47,6 +47,9 @@ public class Planes : MonoBehaviour {
 
         if (Input.GetButtonDown("Fire1"))
         {
+			if (CursorManager.instance) {
+				CursorManager.instance.Grab ();
+			}
             GrabAnimal();
         }
 
@@ -61,6 +64,9 @@ public class Planes : MonoBehaviour {
         // trigger when the user clicks the mouse
         if (Input.GetButtonUp("Fire1") && _animalSelected != null)
         {
+			if (CursorManager.instance) {
+				CursorManager.instance.LetGo ();
+			}
             PlaceAnimal();
         }
     }
