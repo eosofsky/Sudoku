@@ -20,17 +20,17 @@ public class Cube : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Input.GetKeyDown ("a")) {
+		if (Input.GetKeyDown ("z")) {
 			rotateRow (0f, true);
-		} else if (Input.GetKeyDown ("s")) {
+		} else if (Input.GetKeyDown ("x")) {
 			rotateRow (0f, false);
-		} else if (Input.GetKeyDown ("d")) {
+		} else if (Input.GetKeyDown ("a")) {
 			rotateRow (1.1f, true);
-		} else if (Input.GetKeyDown ("f")) {
+		} else if (Input.GetKeyDown ("s")) {
 			rotateRow (1.1f, false);
-		} else if (Input.GetKeyDown ("g")) {
+		} else if (Input.GetKeyDown ("q")) {
 			rotateRow (2.2f, true);
-		} else if (Input.GetKeyDown ("h")) {
+		} else if (Input.GetKeyDown ("w")) {
 			rotateRow (2.2f, false);
 		} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
 			RotateCube(false);
