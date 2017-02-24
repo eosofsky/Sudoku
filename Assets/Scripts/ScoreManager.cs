@@ -8,9 +8,12 @@ public class ScoreManager : MonoBehaviour {
 	private Text counterText;
 	public static int score;
     public GameObject[] towers;
+    public GameObject waveSprite;
 
     private string _scaffoldText = "Scaffold_{0}";
     private string _floorText = "Floor_{0}";
+
+    private float wavePos;
 
     private GameObject scaffoldToHide;
     private GameObject scaffoldToShow;
@@ -18,10 +21,22 @@ public class ScoreManager : MonoBehaviour {
 
     void Start () {
         score = 0;
+        wavePos = waveSprite.transform.position.y;
 	}
+
+    public void Update()
+    {
+        if (score > 0)
+        {
+            waveSprite.transform.position = new Vector3(
+                waveSprite.transform.position.x,
+                waveSprite.transform.position.y + 0.033f);
+        }
+    }
 
     public void UpdateScore() {
         score += 1;
+        SetWaveSprite();
         if (score < 8) {
             foreach (var obj in towers)
             {
@@ -42,6 +57,16 @@ public class ScoreManager : MonoBehaviour {
                 }
             }
         }
+        else
+        {
+            // YOU WIN!!!!!!!!
+        }
     }
 
+    void SetWaveSprite()
+    {
+        waveSprite.transform.position = new Vector3 (
+            waveSprite.transform.position.x,
+            wavePos + (110.0f * score));
+    }
 }

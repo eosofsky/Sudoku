@@ -40,7 +40,7 @@ public class LevelManager : MonoBehaviour
         _timesRaised = 0;
         _timesWon = 0;
         _timePassed = 0.0f;
-        _lossHeight = 1.70f;
+        _lossHeight = 2.0f;
 
 		scoreManager = GameObject.FindGameObjectWithTag ("Score_Manager").GetComponent<ScoreManager> ();
 		cameraManager = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraManager> ();
