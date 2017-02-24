@@ -108,6 +108,7 @@ public class LevelManager : MonoBehaviour
 			oldCube.tag = "Untagged";
 			GameObject oldScaffolding = GameObject.FindGameObjectWithTag ("Scaffolding");
 			if (oldScaffolding) {
+				oldScaffolding.tag = "Untagged";
 				Destroy (oldScaffolding);
 			}
 			Cube oldCubeScript = oldCube.GetComponent<Cube> ();
