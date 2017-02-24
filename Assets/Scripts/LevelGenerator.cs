@@ -20,9 +20,9 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	public int[] GetLevel () {
+	public int[] GetLevel (int minRemove, int maxRemove) {
 		int[] level = GetCompleteFace ();
-		RemoveSome (level);
+		RemoveSome (minRemove, maxRemove, level);
 		return level;
 	}
 
@@ -93,17 +93,10 @@ public class LevelGenerator : MonoBehaviour {
 		return face;
 	}
 
-	private void RemoveSome(int[] face) {
-		/* Remove 3 or 4 pieces per face */
-		int numRemove = 0;
-		float rand = 0.5f;
-		while (rand != 0.5f) {
-			rand = Random.value;
-		}
-		if (rand > 0) {
-			numRemove = 4;
-		} else {
-			numRemove = 5;
+	private void RemoveSome(int minRemove, int maxRemove, int[] face) {
+		int numRemove = maxRemove + 1;
+		while (numRemove == maxRemove + 1) {
+			numRemove = (int)(Random.value * (maxRemove - minRemove + 1) + minRemove);
 		}
 
 		for(int i = 0; i < numRemove; i++) {

@@ -57,11 +57,8 @@ public class Cube : MonoBehaviour {
 		}
 	}
 
-	private void Randomize () {
-		/* Get between 0 and 10 rotations */
-		int num_r = (int)(Random.value * 10.0f);
+	private void Randomize (int num_r) {
 		for (int i = 0; i < num_r; i++) {
-
 			/* Choose a row randomly */
 			int row = 3;
 			while (row == 3) {
@@ -353,8 +350,8 @@ public class Cube : MonoBehaviour {
 		}
 	}
 
-	private void AssignPuzzleToFace (GameObject[] plane, bool front_or_back) {
-		int[] level = level_generator.GetLevel ();
+	private void AssignPuzzleToFace (int minRemove, int maxRemove, GameObject[] plane, bool front_or_back) {
+		int[] level = level_generator.GetLevel (minRemove, maxRemove);
 		GameObject[] face = MakeFace (plane, front_or_back);
 		for (int i = 0; i < 9; i++) {
 			AssignSprite (face [i], level [i]);
@@ -368,10 +365,30 @@ public class Cube : MonoBehaviour {
 		GameObject[] left = GameObject.FindGameObjectsWithTag ("Plane_D");
 
 		/* Assign a random puzzle */
-		AssignPuzzleToFace (front, true);
-		AssignPuzzleToFace (right, false);
-		AssignPuzzleToFace (back, true);
-		AssignPuzzleToFace (left, false);
+		int level = LevelManager.instance.level;
+		int minRemove;
+		int maxRemove;
+		int numRot;
+		if (level == 1) { /* level 1 */
+			minRemove = 1;
+			maxRemove = 3;
+			numRot = 0;
+		} else if (level < 4) { /* level 2 & 3 */
+			minRemove = 2;
+			maxRemove = 4;
+			/* Between 2 and 5 rotations */
+			numRot = (int)(Random.value * 3.0f) + 2;
+
+		} else { /* All other levels */
+			minRemove = 3;
+			maxRemove = 5;
+			/* Between 5 and 10 rotations */
+			numRot = (int)(Random.value * 5.0f) + 5;
+		}
+		AssignPuzzleToFace (minRemove, maxRemove, front, true);
+		AssignPuzzleToFace (minRemove, maxRemove, right, false);
+		AssignPuzzleToFace (minRemove, maxRemove, back, true);
+		AssignPuzzleToFace (minRemove, maxRemove, left, false);
 
 		for (int i = 0; i < 9; i++) {
 			MaybeLock (front [i]);
@@ -379,7 +396,7 @@ public class Cube : MonoBehaviour {
 			MaybeLock (back [i]);
 			MaybeLock (left [i]);
 		}
-		Randomize ();
+		Randomize (numRot);
 	}
 
 	public void EndCube () {

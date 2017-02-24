@@ -11,6 +11,8 @@ public class LevelManager : MonoBehaviour
 
 	public static LevelManager instance;
 
+	public int level = 1;
+
     private Cube currentCubeScript = null;
 	private GameObject oldCube = null;
 	private ScoreManager scoreManager;
@@ -91,6 +93,7 @@ public class LevelManager : MonoBehaviour
             newPos.y -= 0.7f;
             easeUp = newPos;
 
+			level++;
 			SpawnCube ();
 
 			/* Update camera */
