@@ -13,9 +13,11 @@ public class Cube : MonoBehaviour {
 	public Sprite puma_closed;
 
 	private LevelGenerator level_generator;
+	private GameObject scaffolding;
 
 	void Start () {
 		level_generator = GameObject.FindGameObjectWithTag("Manager").GetComponent<LevelGenerator> ();
+		scaffolding = GameObject.FindGameObjectWithTag ("Scaffolding");
 		StartCube ();
 	}
 
@@ -44,11 +46,13 @@ public class Cube : MonoBehaviour {
 			if (CursorManager.instance) {
 				CursorManager.instance.SwipeLeft ();
 			}
+			StartCoroutine (rotateScaffolding (true));
 			rotateRow (2.2f, true);
 		} else if (Input.GetKeyDown ("w")) {
 			if (CursorManager.instance) {
 				CursorManager.instance.SwipeRight ();
 			}
+			StartCoroutine (rotateScaffolding (false));
 			rotateRow (2.2f, false);
 		} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
 			RotateCube(false);
@@ -77,6 +81,7 @@ public class Cube : MonoBehaviour {
 			} else if (row == 1) {
 				rotateRow (1.1f, rot_left);
 			} else if (row == 2) {
+				StartCoroutine (rotateScaffolding (rot_left));
 				rotateRow (2.2f, rot_left);
 			}
 		}
@@ -90,6 +95,7 @@ public class Cube : MonoBehaviour {
 		}
 		rotateRow (0.0f, left);
 		rotateRow (1.1f, left);
+		StartCoroutine (rotateScaffolding (left));
 		rotateRow (2.2f, left);
 	}
 
@@ -99,6 +105,20 @@ public class Cube : MonoBehaviour {
 				StartCoroutine (rotate (pieces[i], left));
 			}
 		}
+	}
+
+	IEnumerator rotateScaffolding (bool left) {
+		int amount = 10;
+		Vector3 dir = left ? Vector3.up : -Vector3.up;
+		Vector3 point = Vector3.zero;
+		point.y += height;
+		for (int i = 0; i < 90 / amount; i++) {
+			if (scaffolding) {
+				scaffolding.transform.RotateAround (point, dir, amount);
+			}
+			yield return new WaitForSeconds (0.05f);
+		}
+		yield return null;
 	}
 
 	void UpdateTag (GameObject piece, bool left) {

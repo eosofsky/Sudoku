@@ -106,6 +106,10 @@ public class LevelManager : MonoBehaviour
 	void SpawnCube () {
 		if (oldCube) {
 			oldCube.tag = "Untagged";
+			GameObject oldScaffolding = GameObject.FindGameObjectWithTag ("Scaffolding");
+			if (oldScaffolding) {
+				Destroy (oldScaffolding);
+			}
 			Cube oldCubeScript = oldCube.GetComponent<Cube> ();
 			oldCubeScript.EndCube ();
 			oldCubeScript.enabled = false;
