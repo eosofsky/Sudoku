@@ -59,7 +59,7 @@ public class ScoreManager : MonoBehaviour {
         }
         else
         {
-            // YOU WIN!!!!!!!!
+			Application.LoadLevel("Win");
         }
     }
 
